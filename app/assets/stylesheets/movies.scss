@@ -1,0 +1,72 @@
+// Place all the styles related to the movies controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* ----------------------------------------------------------------
+  Settings
+------------------------------------------------------------------*/
+
+/* ---------------------
+  Colors
+-----------------------*/
+
+
+$dark94: rgba(0,0,0,0.94);
+$dark84: rgba(0,0,0,0.84);
+$dark74: rgba(0,0,0,0.74);
+$dark64: rgba(0,0,0,0.64);
+$dark54: rgba(0,0,0,0.54);
+$dark1: rgba(0,0,0,0.1);
+
+
+
+/* --------------------------------------------------------------
+  Navigation
+ ----------------------------------------------------------------- */
+
+.navbar {
+  height: 80px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  z-index: 100;
+  transition: background-color 1s ease 0s;
+}
+
+.navbar {
+  .navbar-brand {
+    color: #fff;
+  }
+
+  .navbar-nav {
+    > li {
+      > a {
+        color: #fff;
+        margin: 10px 5px 5px 5px;
+      }
+    }
+  }
+
+  .navbar-collapse.collapse.in ul {
+    background-color: #fff;
+  }
+}
+
+.navbar.solid {
+  background-color: #fff;
+  transition: background-color 1s ease 0s;
+
+  .navbar-brand {
+    color: $dark84;
+    transition: color 1s ease 0s;
+  }
+
+  .navbar-nav {
+    > li {
+      > a {
+        color: $dark64;
+        transition: color 1s ease 0s;
+      }
+    } //end li
+  } //end .navbar-nav
+}
