@@ -1,7 +1,7 @@
 $(document).on('turbolinks:load', function() {
   if ($('body').data('page') == 'home') {
     initTransparentNavbar();
-		getMainCarouselMovies();
+		//getMainCarouselMovies();
   }
 });
 

@@ -1,6 +1,6 @@
-module MovieDB
+module MovieCore
   class Movie < Base
-    attr_accesor :backdrop_path,
+    attr_accessor :backdrop_path,
                  :homepage,
                  :id,
                  :imdb_id,
@@ -16,9 +16,12 @@ module MovieDB
                  :tagline,
                  :title,
                  :vote_average,
-                 :vote_count
+                 :vote_count,
+                 :genres,
+                 :production_companies
 
     CACHE_DEFAULTS = { expires_in: 7.days, force: false }
+    MAX_LIMIT = 5
 
     def initialize(args = {})
       super(args)
@@ -27,8 +30,15 @@ module MovieDB
     end
 
     def self.find(id)
-      response = Request.get("movie/#{id}", CACHE_DEFAULTS)
+      response = Protocol::Request.get("movie/#{id}", CACHE_DEFAULTS)
       Movie.new(response)
+    end
+
+    def self.trending(cache_params, max_limit=MAX_LIMIT, query = {})
+      cache = CACHE_DEFAULTS.merge( cache_params )
+      response = Protocol::Request.where('trending/movie/week', cache, query)
+      movies = response.fetch('results', []).sample(max_limit).map { |movie| Movie.new(movie) }
+      [ movies, response[:errors] ]
     end
 
     def parse_genres(args)

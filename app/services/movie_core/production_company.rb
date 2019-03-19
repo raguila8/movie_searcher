@@ -1,6 +1,6 @@
-module MovieDb
+module MovieCore
   class ProductionCompany < Base
-    attr_accesor :id, 
+    attr_accessor :id, 
                  :logo_path, 
                  :name, 
                  :origin_country

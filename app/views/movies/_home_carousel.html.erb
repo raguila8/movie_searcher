@@ -5,39 +5,11 @@
 		<li data-target="#homeCarousel" data-slide-to="2"></li>
 		<li data-target="#homeCarousel" data-slide-to="3"></li>
 	  <li data-target="#homeCarousel" data-slide-to="4"></li>
-		<li data-target="#homeCarousel" data-slide-to="5"></li>
-    <li data-target="#homeCarousel" data-slide-to="6"></li>
-	  <li data-target="#homeCarousel" data-slide-to="7"></li>
-		<li data-target="#homeCarousel" data-slide-to="8"></li>
 	</ol>
 	<div class="carousel-inner">
-	  <div class="carousel-item active">
-	    <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="First slide">
-		</div>
-		<div class="carousel-item">
-		  <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="Second slide">
-		</div>
-	  <div class="carousel-item">
-		  <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="Third slide">
-		</div>
-    <div class="carousel-item active">
-	    <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="Fourth slide">
-		</div>
-		<div class="carousel-item">
-		  <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="Fifth slide">
-		</div>
-	  <div class="carousel-item">
-		  <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="Sixth slide">
-		</div>
-    <div class="carousel-item active">
-	    <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="Seventh slide">
-		</div>
-		<div class="carousel-item">
-		  <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="Eighth slide">
-		</div>
-	  <div class="carousel-item">
-		  <img class="d-block w-100" src="https://via.placeholder.com/1600x800" alt="Ninth slide">
-		</div>
+	  <% @trending_movies.each_with_index do |movie, index| %>
+      <%= render partial: 'movies/home_carousel_item', locals: { movie: movie, index: index } %>
+    <% end %>
 	</div>
 	<a class="carousel-control-prev" href="#homeCarousel" role="button" data-slide="prev">
 	  <span class="carousel-control-prev-icon" aria-hidden="true"></span>

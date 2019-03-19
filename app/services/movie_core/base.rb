@@ -1,4 +1,4 @@
-module MovieDB
+module MovieCore
   class Base
     attr_accessor :errors
 
