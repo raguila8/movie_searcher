@@ -37,7 +37,41 @@ module MovieCore
     def self.trending(cache_params, max_limit=MAX_LIMIT, query = {})
       cache = CACHE_DEFAULTS.merge( cache_params )
       response = Protocol::Request.where('trending/movie/week', cache, query)
-      movies = response.fetch('results', []).sample(max_limit).map { |movie| Movie.new(movie) }
+      movies = response.fetch('results', []).sample(max_limit).map { |movie| MovieCore::Movie.find(movie.fetch('id')) }
+      [ movies, response[:errors] ]
+    end
+
+    def self.now_playing(cache_params, max_limit=6, query= {})
+      cache = CACHE_DEFAULTS.merge( cache_params )
+      response = Protocol::Request.where('movie/now_playing', cache, query)
+      movies = response.fetch('results', []).sample(max_limit).map { |movie| MovieCore::Movie.find(movie.fetch('id')) }
+      [ movies, response[:errors] ]
+    end
+
+    def self.latest(cache_params, max_limit=6, query= {})
+      cache = CACHE_DEFAULTS.merge( cache_params )
+      response = Protocol::Request.where('movie/latest', cache, query)
+      Movie.new(response)
+    end
+
+    def self.popular(cache_params, max_limit=6, query ={})
+      cache = CACHE_DEFAULTS.merge( cache_params )
+      response = Protocol::Request.where('movie/popular', cache, query)
+      movies = response.fetch('results', []).sample(max_limit).map { |movie| MovieCore::Movie.find(movie.fetch('id')) }
+      [ movies, response[:errors] ]
+    end
+
+    def self.top_rated(cache_params, max_limit=6, query = {})
+      cache = CACHE_DEFAULTS.merge( cache_params )
+      response = Protocol::Request.where('movie/top_rated', cache, query)
+      movies = response.fetch('results', []).sample(max_limit).map { |movie| MovieCore::Movie.find(movie.fetch('id')) }
+      [ movies, response[:errors] ]
+    end
+
+    def self.upcoming(cache_params, max_limit=6, query ={region: 'US'})
+      cache = CACHE_DEFAULTS.merge( cache_params )
+      response = Protocol::Request.where('movie/upcoming', cache, query)
+      movies = response.fetch('results', []).sample(max_limit).map { |movie| MovieCore::Movie.find(movie.fetch('id')) }
       [ movies, response[:errors] ]
     end
 

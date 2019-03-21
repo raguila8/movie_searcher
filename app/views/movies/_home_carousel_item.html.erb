@@ -3,8 +3,52 @@
   </div>
 
 	<div class='film-info'>
-    <h1 class='film-title'><%= movie.title %></h1>
+    <h1 class='film-title line-clamp line-clamp-3'><%= movie.title %></h1>
 		<h3 class='film-secondary-info'><%= movie.tagline %></h3>
+    <span class='film-genres'>
+      <% movie.genres.first(3).each do |genre| %>
+      <a href='#'><%= genre.name %></a>
+      <% end %>
+    </span>
 	</div>
-</div>
 
+  <div class='film-buttons'>
+
+    <!-- Shop Button -->
+	  <%= link_to '#', class: 'btn film-button' do %>
+      <div class='film-button-content'>
+			  <span class='film-btn-icon-container'>
+				  <%= inline_svg 'baseline-shop.svg', class: 'film-btn-svg' %>
+			  </span>
+				<span>
+				  Buy now
+				</span>
+			</div>
+		<% end %>
+
+
+    <!-- Trailer Button -->
+	  <%= link_to '#', class: 'btn film-button' do %>
+      <div class='film-button-content'>
+			  <span class='film-btn-icon-container'>
+				  <%= inline_svg 'baseline-play_arrow.svg', class: 'film-btn-svg' %>
+			  </span>
+				<span>
+				  Watch trailer
+				</span>
+			</div>
+		<% end %>
+
+    <!-- More info button -->
+    <%= link_to '#', class: 'btn film-button' do %>
+      <div class='film-button-content'>
+			  <span class='film-btn-icon-container'>
+				  <%= inline_svg 'outline-arrow_right_alt', class: 'film-btn-svg' %>
+				</span>
+				<span class='film-btn-text'>
+				  More information
+				</span>
+			</div>
+    <% end %>
+  </div>
+</div>

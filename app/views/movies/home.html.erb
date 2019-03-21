@@ -1,2 +1,9 @@
 <%= render '/movies/home_carousel' %>
 
+<div class='container mt-2'>
+  <% home_sections.each do |section| %>
+    <%= render partial: 'movies/home_collection_section', locals: { section: section } %>
+  <% end %>
+</div>
+
+<%= render '/movies/trailer_modal' %>

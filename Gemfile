@@ -39,6 +39,10 @@ gem 'bootstrap', '~> 4.3.1'
 # use jquery
 gem 'jquery-rails'
 
+# use inline_svg to style svg files
+gem 'inline_svg'
+
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 

@@ -17,4 +17,23 @@ module MoviesHelper
   def configurations_base_url
     "https://image.tmdb.org/t/p/"
   end
+
+  def home_sections
+    ['Now playing', 'Popular', 'Top rated', 'Upcoming']
+  end
+
+  def home_collection(section)
+    case section
+    when "Now playing"
+      @now_playing
+    when "Popular"
+      @popular
+    when "Top rated"
+      @top_rated
+    when "Upcoming"
+      @upcoming
+    else
+      nil
+    end
+  end
 end

@@ -1,0 +1,49 @@
+<section class='home-section pt-6 pb-6'>
+  <div class='row align-items-center'>
+    <div class='col-10'>
+      <h1 class='display-4'><%= section %></h1>
+    </div>
+    <div class='col-2 justify-content-center'>
+      <%= link_to '#', class: 'btn btn-text font-weight-600' do %>
+        <div class='btn-content'>
+			    <span class='btn-text mr-1'>
+			    	View all
+			    </span>
+          <span class='btn-svg-container'>
+				    <%= inline_svg 'outline-arrow_right_alt', class: 'btn-svg' %>
+			    </span>
+		    </div>
+      <% end %>
+    </div>
+  </div>
+ 
+  <div class='row'>
+	  <% home_collection(section).each do |movie| %>
+    <div class='col-md-4 movie-poster-item'>
+	    <div class='position-relative movie-poster-container'>
+        <a href='#' class='movie-link'>
+          
+        </a>
+	      <img src="<%= configurations_base_url %>w500<%=movie.poster_path%>" class='img-fluid'>
+			  <div class='movie-meta'>
+          <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
+          <p><%=movie.status%></p>
+        </div>
+        <ul class='movie-actions'>
+          <li class='trailer-btn' data-toggle="modal" data-src="https://www.youtube.com/embed/Jfrjeg26Cwk" data-target='#trailerModal'>
+            <span>
+              <%= inline_svg 'baseline-play_arrow'%>
+            </span>
+          </li>
+
+          <li data-toggle='tooltip' title='View more information'>
+            <span>
+              <%= inline_svg 'outline-arrow_right_alt'%>
+            </span>
+          </li>
+        </ul>
+  		</div>
+  	</div>
+    <% end %>
+  </div>
+</section>
