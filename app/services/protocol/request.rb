@@ -9,8 +9,8 @@ module Protocol
         status == 200 ? response : errors(response)
       end
 
-      def get(id, cache_params)
-        response, status = get_json(id, cache_params)
+      def get(id, cache_params, query={})
+        response, status = get_json(id, cache_params, query)
         status == 200 ? response : errors(response)
       end
 

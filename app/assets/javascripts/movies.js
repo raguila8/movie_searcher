@@ -69,7 +69,7 @@ function initTrailerVideos() {
   // Gets the video src from the data-src on each button
 
   var $trailerSrc;
-  $('.movie-poster-item').on('click', '.trailer-btn', function() {
+  $('.movie-poster-item, .carousel-item').on('click', '.trailer-btn', function() {
     console.log('btn-clicked');
     $trailerSrc = $(this).data( "src" );
   });   

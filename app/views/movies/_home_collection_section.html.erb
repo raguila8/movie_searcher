@@ -1,9 +1,9 @@
 <section class='home-section pt-6 pb-6'>
   <div class='row align-items-center'>
-    <div class='col-10'>
+    <div class='col-8'>
       <h1 class='display-4'><%= section %></h1>
     </div>
-    <div class='col-2 justify-content-center'>
+    <div class='col-4 text-center justify-content-center'>
       <%= link_to '#', class: 'btn btn-text font-weight-600' do %>
         <div class='btn-content'>
 			    <span class='btn-text mr-1'>
@@ -29,19 +29,15 @@
           <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
           <p><%=movie.status%></p>
         </div>
+        <% if movie.trailers? %>
         <ul class='movie-actions'>
-          <li class='trailer-btn' data-toggle="modal" data-src="https://www.youtube.com/embed/Jfrjeg26Cwk" data-target='#trailerModal'>
+          <li class='trailer-btn' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#trailerModal'>
             <span>
               <%= inline_svg 'baseline-play_arrow'%>
             </span>
           </li>
-
-          <li data-toggle='tooltip' title='View more information'>
-            <span>
-              <%= inline_svg 'outline-arrow_right_alt'%>
-            </span>
-          </li>
         </ul>
+        <% end %>
   		</div>
   	</div>
     <% end %>
