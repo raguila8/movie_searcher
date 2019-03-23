@@ -21,9 +21,16 @@ module MovieCore
                   :production_companies,
                   :videos,
                   :trailers,
-                  :external_ids
+                  :external_ids,
+                  :characters,
+                  :crew,
+                  :directed_by,
+                  :written_by,
+                  :screenplay_by,
+                  :story_by
 
     CACHE_DEFAULTS = { expires_in: 7.days, force: false }
+    QUERY_DEFAULTS = { append_to_response: "videos,external_ids" }
     MAX_LIMIT = 5
 
     def initialize(args = {})
@@ -32,10 +39,15 @@ module MovieCore
       self.production_companies = parse_production_companies(args)
       self.videos = parse_videos(args)
       self.trailers = parse_trailers if videos?
+      if args.key?('credits')
+        self.parse_cast_and_crew(args)
+      end
     end
 
     def self.find(id, query={})
-      query = query.merge({ append_to_response: 'videos,external_ids' })
+      query = QUERY_DEFAULTS.merge(query) do |key, old_val, new_val| 
+        key == :append_to_response ? "#{old_val},#{new_val}" : new_val
+      end
       response = Protocol::Request.get("movie/#{id}", CACHE_DEFAULTS, query)
       Movie.new(response)
     end
@@ -95,6 +107,31 @@ module MovieCore
 
     def parse_trailers
       self.videos.select { |video| video.type == 'Trailer' }
+    end
+
+    def parse_cast_and_crew(args)
+      self.characters = args.fetch("credits", {}).fetch('cast', []).map { |character| Character.new(character) }
+      
+      self.directed_by = []
+      self.written_by = []
+      self.screenplay_by = []
+      self.story_by = []
+
+      self.crew = args.fetch("credits", {}).fetch('crew', []).map do |crew_member|
+        crew_member = CrewMember.new(crew_member)
+        directed_by << crew_member if crew_member.department == "Directing"
+        if crew_member.department == "Writing"
+          if crew_member.job == "Writer"
+            written_by << crew_member 
+          elsif crew_member.job == "Screenplay"
+            screenplay_by << crew_member 
+          elsif crew_member.job == "Story"
+            story_by << crew_member 
+          end
+        end
+
+        crew_member
+      end
     end
 
     def get_a_trailer

@@ -2,6 +2,11 @@ module MoviesHelper
   def page_name
     action_name if controller_name == 'movies'
   end
+
+  def navbar_class
+    return "fixed-top" if page_name == "home"
+    return "solid" if page_name == "show"
+  end
  
   def home_carousel_item_html(movie, index)
     "<div class='carousel-item #{'active' if index == 0}' style='background-image: url(#{configurations_base_url}/original/#{movie.backdrop_path});'>

@@ -1,7 +1,7 @@
 <section class='home-section pt-6 pb-6'>
   <div class='row align-items-center'>
     <div class='col-8'>
-      <h1 class='display-4'><%= section %></h1>
+      <h1 class='display-5'><%= section %></h1>
     </div>
     <div class='col-4 text-center justify-content-center'>
       <%= link_to '#', class: 'btn btn-text font-weight-600' do %>
@@ -21,9 +21,7 @@
 	  <% home_collection(section).each do |movie| %>
     <div class='col-md-4 movie-poster-item'>
 	    <div class='position-relative movie-poster-container'>
-        <a href='#' class='movie-link'>
-          
-        </a>
+        <%= link_to '', movie_path(movie.id), class: 'movie-link' %>
 	      <img src="<%= configurations_base_url %>w500<%=movie.poster_path%>" class='img-fluid'>
 			  <div class='movie-meta'>
           <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
@@ -31,9 +29,9 @@
         </div>
         <% if movie.trailers? %>
         <ul class='movie-actions'>
-          <li class='trailer-btn' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#trailerModal'>
+          <li class='trailer-btn transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#trailerModal'>
             <span>
-              <%= inline_svg 'baseline-play_arrow'%>
+              <%= inline_svg 'baseline-play_circle_filled'%>
             </span>
           </li>
         </ul>

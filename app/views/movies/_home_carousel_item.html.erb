@@ -3,8 +3,10 @@
   </div>
 
 	<div class='film-info'>
-    <h1 class='film-title line-clamp line-clamp-5'><%= movie.title %></h1>
-		<h3 class='film-secondary-info'><%= movie.tagline %></h3>
+    <%= link_to movie_path(movie.id) do %>
+      <h1 class='film-title line-clamp line-clamp-5'><%= movie.title %></h1>
+		  <h3 class='film-secondary-info'><%= movie.tagline %></h3>
+    <% end %>
     <span class='film-genres'>
       <% movie.genres.first(3).each do |genre| %>
       <a href='#'><%= genre.name %></a>
@@ -16,7 +18,7 @@
 
     <% if not movie.homepage.nil? %>
     <!-- Shop Button -->
-	  <%= link_to movie.homepage, class: 'btn btn-lg film-button', target: :_blank do %>
+	  <%= link_to movie.homepage, class: 'btn btn-lg film-button transition-color-03', target: :_blank do %>
 		  <span class='svg-icon svg-baseline'>
 		    <%= inline_svg 'baseline-home.svg', class: 'film-btn-svg' %>
 			</span>
@@ -29,7 +31,7 @@
 
     <% if movie.trailers? %>
     <!-- Trailer Button -->
-	  <span class='btn btn-lg film-button trailer-btn' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#trailerModal'>
+	  <span class='btn btn-lg film-button trailer-btn transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#trailerModal'>
 		  <span class='svg-icon svg-baseline'>
 				<%= inline_svg 'baseline-play_arrow.svg', class: 'film-btn-svg' %>
 		  </span>
@@ -39,7 +41,7 @@
 		</span>
     <% end %>
 
-    <div class='film-social-btns pt-3'>
+    <div class='film-social-btns pt-3 transition-color-03'>
     <% if movie.has_facebook? %>
 		  <%= link_to movie.facebook_url, target: :_blank do %>
         <%= inline_svg 'facebook-logo.svg', class: 'film-btn-svg' %>
