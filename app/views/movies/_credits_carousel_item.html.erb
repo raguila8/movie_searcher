@@ -1,0 +1,15 @@
+<%= link_to '#' do %>
+<div class='credits-carousel-item text-center'>
+	<div class='carousel-profile-item mb-2'>
+    <div class='position-relative credit-profile-container'>
+	    <img src="<%= configurations_base_url %>h632<%=person.profile_path%>" class='img-fluid'>
+	  </div>
+	</div>
+  <p class='font-weight-normal fs-130 mb-1'><%= person.name %></p>
+  <% if person.class.method_defined? :character %>
+    <span class='dark-64 font-weight-light'><%= person.character %></span>
+  <% else %>
+    <span class='dark-64 font-weight-light'><%= person.job %></span>
+  <% end %>
+</div>
+<% end %>

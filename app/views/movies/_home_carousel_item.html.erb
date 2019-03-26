@@ -31,7 +31,7 @@
 
     <% if movie.trailers? %>
     <!-- Trailer Button -->
-	  <span class='btn btn-lg film-button trailer-btn transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#trailerModal'>
+	  <span class='btn btn-lg film-button trailer-btn video-toggle transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#videoModal'>
 		  <span class='svg-icon svg-baseline'>
 				<%= inline_svg 'baseline-play_arrow.svg', class: 'film-btn-svg' %>
 		  </span>

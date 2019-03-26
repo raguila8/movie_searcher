@@ -9,7 +9,7 @@ class MoviesController < ApplicationController
   end
 
   def show
-    @movie = MovieCore::Movie.find(params[:id], append_to_response: "credits")
+    @movie = MovieCore::Movie.find(params[:id], append_to_response: "credits,release_dates,images", include_image_language: 'en')
   end
 
   def index

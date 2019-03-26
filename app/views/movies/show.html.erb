@@ -1,6 +1,6 @@
 <div class='container pt-6'>
-  <section class='movie-header'>
-    <h1 class='display-5 mb-5'>
+  <section class='show-section movie-header mb-9'>
+    <h1 class='display-4 mb-5'>
       <%= @movie.title %>
     </h1>
 
@@ -42,14 +42,42 @@
           </div>
           <% end %>
 
+          <% if not @movie.runtime.nil? %>
           <div class='col-md-4 mb-4'>
             <p class='lead1 featured-data-cat'>Runtime</p>
             <span class='featured-data'>
               <%= @movie.runtime %> min
             </span>
           </div>
+          <% end %>
+
+          <% if not @movie.rating.nil? %>
           <div class='col-md-4 mb-4'>
+            <p class='lead1 featured-data-cat'>Rating</p>
+            <span class='featured-data'>
+              <%= @movie.rating %>
+            </span>
           </div>
+          <% end %>
+
+          <% if not @movie.release_date.nil? %>
+          <div class='col-md-4 mb-4'>
+            <p class='lead1 featured-data-cat'>Release Date</p>
+            <span class='featured-data'>
+              <%= @movie.release_date.to_time.strftime("%B %e, %Y") %>
+            </span>
+          </div>
+          <% end %>
+
+          <% if not @movie.status.nil? %>
+          <div class='col-md-4 mb-4'>
+            <p class='lead1 featured-data-cat'>Status</p>
+            <span class='featured-data'>
+              <%= @movie.status %>
+            </span>
+          </div>
+          <% end %>
+
         </div>
       </div>
 
@@ -58,4 +86,8 @@
       </div>
     </div>
   </section>
+
+	<%= render '/movies/tabs' %>
 </div>
+
+<%= render '/movies/video_modal' %>

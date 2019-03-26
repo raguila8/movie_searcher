@@ -1,0 +1,87 @@
+<!-- Cast section -->
+<section class='show-section cast-section mb-9'>
+  <h1 class='display-5 mb-5'>Cast</h1>
+  <div class='cast-carousel slick-carousel'>
+    <% movie.cast.each do |cast_member| %>
+		  <% if not cast_member.profile_path.nil? %>
+        <%= render partial: '/movies/credits_carousel_item', locals: { person: cast_member } %>
+			<% end %>
+    <% end %>
+  </div>
+</section> <!--/ End cast section -->
+
+<!-- Crew section -->
+<section class='show-section crew-section mb-9'>
+  <h1 class='display-5 mb-5'>Crew</h1>
+  <div class='crew-carousel slick-carousel'>
+    <% movie.crew.each do |crew_member| %>
+		  <% if not crew_member.profile_path.nil? %>
+        <%= render partial: '/movies/credits_carousel_item', locals: { person: crew_member } %>
+			<% end %>
+    <% end %>
+  </div>
+</section> <!--/ End crew section -->
+
+<!-- Images section -->
+<section class='show-section images-section mb-9'>
+  <h1 class='display-5 mb-5'>Images</h1>
+
+  <div class='card-columns'>
+    <% movie.images.take(6).each do |image| %>
+    <div class='card'>
+      <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
+    </div>
+    <% end %>
+  </div>
+</section> <!--/ End images section -->
+
+<!-- Videos section -->
+<section class='show-section videos-section mb-9'>
+  <h1 class='display-5 mb-5'>Videos</h1>
+  <% if movie.video_count > 3 %>
+  <div class="embed-responsive embed-responsive-16by9">
+	  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/<%=movie.videos.first.key%>" id="show-video"  allowscriptaccess="always" allow="autoplay" allowfullscreen></iframe>
+	</div>
+
+  <div class='video-carousel slider-nav slick-carousel'>
+    <% movie.videos.each_with_index do |video, index| %>
+      <div class='video-carousel-item text-center'>
+        <div class="position-relative video-image-container <%= 'active' if index == 0 %>" data-src="https://www.youtube.com/embed/<%=video.key%>">
+          <img src="https://img.youtube.com/vi/<%=video.key%>/maxresdefault.jpg" class='img-fluid'>
+          <div class='video-meta'>
+            <h6 class='line-clamp line-clamp-3' ><%=video.name%></h6>
+          </div>
+
+          <div class='video-btn transition-color-03' data-src="https://www.youtube.com/embed/<%= video.key %>">
+            <span>
+              <%= inline_svg 'baseline-play_circle_filled'%>
+            </span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <% else %>
+    <div class='row'>
+    <% movie.videos.each do |video| %>
+      <div class='col show-video-item'>
+        <div class='card video-card video-toggle' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= video.key %>" data-target='#videoModal' >
+          <div class='position-relative video-card-img-container'>
+            <img class="card-img-top img-fluid" src="https://img.youtube.com/vi/<%=video.key%>/maxresdefault.jpg" data-holder-rendered="true">
+            <div class='video-btn transition-color-03'>
+            <span>
+              <%= inline_svg 'baseline-play_circle_filled'%>
+            </span>
+          </div>
+
+          </div>
+          <div class='card-body'>
+            <h5 class='card-title'><%= video.name %></h5>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    </div>
+  <% end %>
+
+

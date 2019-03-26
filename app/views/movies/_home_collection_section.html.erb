@@ -29,7 +29,7 @@
         </div>
         <% if movie.trailers? %>
         <ul class='movie-actions'>
-          <li class='trailer-btn transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#trailerModal'>
+          <li class='trailer-btn video-toggle transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#videoModal'>
             <span>
               <%= inline_svg 'baseline-play_circle_filled'%>
             </span>

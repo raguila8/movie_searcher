@@ -22,15 +22,18 @@ module MovieCore
                   :videos,
                   :trailers,
                   :external_ids,
-                  :characters,
+                  :cast,
                   :crew,
                   :directed_by,
                   :written_by,
                   :screenplay_by,
-                  :story_by
+                  :story_by,
+                  :rating,
+                  :backdrops,
+                  :posters
 
     CACHE_DEFAULTS = { expires_in: 7.days, force: false }
-    QUERY_DEFAULTS = { append_to_response: "videos,external_ids" }
+    QUERY_DEFAULTS = { append_to_response: "videos,external_ids", language: 'en-US' }
     MAX_LIMIT = 5
 
     def initialize(args = {})
@@ -40,7 +43,14 @@ module MovieCore
       self.videos = parse_videos(args)
       self.trailers = parse_trailers if videos?
       if args.key?('credits')
-        self.parse_cast_and_crew(args)
+        self.parse_cast(args)
+        self.parse_crew(args)
+      end
+      if args.key?('release_dates')
+        self.parse_release_dates(args)
+      end
+      if args.key?('images')
+        parse_images(args)
       end
     end
 
@@ -109,29 +119,54 @@ module MovieCore
       self.videos.select { |video| video.type == 'Trailer' }
     end
 
-    def parse_cast_and_crew(args)
-      self.characters = args.fetch("credits", {}).fetch('cast', []).map { |character| Character.new(character) }
-      
+    def parse_cast(args)
+      self.cast = args.fetch("credits", {}).fetch('cast', []).map { |character| Character.new(character) }
+    end
+
+    def parse_crew(args)
       self.directed_by = []
       self.written_by = []
       self.screenplay_by = []
       self.story_by = []
 
-      self.crew = args.fetch("credits", {}).fetch('crew', []).map do |crew_member|
-        crew_member = CrewMember.new(crew_member)
-        directed_by << crew_member if crew_member.department == "Directing"
-        if crew_member.department == "Writing"
-          if crew_member.job == "Writer"
+      crew_ids = []
+      self.crew = []
+
+      args.fetch("credits", {}).fetch('crew', []).each do |cm|
+        if not crew_ids.include? cm['id']
+          crew_ids << cm['id']
+          self.crew << (crew_member = CrewMember.new(cm))
+        else
+          crew_member = self.crew.detect { |c| c.id == cm['id'] }
+          crew_member.merge_with(cm)
+        end
+
+        directed_by << crew_member if crew_member.is_in_department? "Directing" and (not directed_by.include? crew_member)
+        if crew_member.is_in_department? "Writing"
+          if crew_member.has_job? "Writer" and (not written_by.include? crew_member)
             written_by << crew_member 
-          elsif crew_member.job == "Screenplay"
+          elsif crew_member.has_job? "Screenplay" and (not screenplay_by.include? crew_member)
             screenplay_by << crew_member 
-          elsif crew_member.job == "Story"
+          elsif crew_member.has_job? "Story"  and (not story_by.include? crew_member)
             story_by << crew_member 
           end
         end
-
-        crew_member
       end
+    end
+
+    def parse_images(args)
+      self.backdrops = args.fetch("images", {}).fetch('backdrops', []).map { |backdrop| Image.new(backdrop) }
+      self.posters = args.fetch("images", {}).fetch('posters', []).map { |poster| Image.new(poster) }
+    end
+
+    def images
+      self.backdrops + self.posters
+    end
+
+    def parse_release_dates(args)
+      self.rating = args.fetch("release_dates", {}).fetch('results', []).select{|r| r["iso_3166_1"] == "US"}.first
+      self.rating = (self.rating.nil? ? "" : self.rating.fetch("release_dates", []).first["certification"])
+      self.rating = nil if self.rating.blank?
     end
 
     def get_a_trailer
@@ -144,6 +179,10 @@ module MovieCore
 
     def trailers?
       videos? and not self.trailers.empty?
+    end
+
+    def video_count
+      self.videos.length
     end
 
     def has_facebook?
