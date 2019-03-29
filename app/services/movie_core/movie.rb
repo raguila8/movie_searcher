@@ -61,6 +61,13 @@ module MovieCore
       response = Protocol::Request.get("movie/#{id}", CACHE_DEFAULTS, query)
       Movie.new(response)
     end
+
+    def self.discover_movies_with_genre(genre)
+      query = {sort_by: "popularity.desc", include_adult: false, with_genres: genre }
+      response = Protocol::Request.where('discover/movie', CACHE_DEFAULTS, query)
+      movies = response.fetch('results', []).map { |movie| MovieCore::Movie.new(movie) }
+      [ movies, response[:errors] ]
+    end
     
     def self.trending(cache_params, max_limit=MAX_LIMIT, query = {})
       cache = CACHE_DEFAULTS.merge( cache_params )
@@ -120,7 +127,7 @@ module MovieCore
     end
 
     def parse_cast(args)
-      self.cast = args.fetch("credits", {}).fetch('cast', []).map { |character| Character.new(character) }
+      self.cast = args.fetch("credits", {}).fetch('cast', []).map { |character| Credit.new(character) }
     end
 
     def parse_crew(args)
@@ -135,7 +142,7 @@ module MovieCore
       args.fetch("credits", {}).fetch('crew', []).each do |cm|
         if not crew_ids.include? cm['id']
           crew_ids << cm['id']
-          self.crew << (crew_member = CrewMember.new(cm))
+          self.crew << (crew_member = Credit.new(cm))
         else
           crew_member = self.crew.detect { |c| c.id == cm['id'] }
           crew_member.merge_with(cm)

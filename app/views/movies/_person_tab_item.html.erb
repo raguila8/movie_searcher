@@ -1,18 +1,13 @@
-
-		  <%= link_to "#" do %>
-      <div class='card'>
-			  <% if not person.profile_path.nil? %>
-          <img class='card-img-top' src="<%= configurations_base_url %>h632<%=person.profile_path%>" class='img-fluid'  alt="<%=person.name%>">
-        <% else %>
-          <img class='card-img-top' src="/assets/default-profile-icon.jpg" class='img-fluid'  alt="<%=person.name%>">
-				<% end %>
-		  	<div class='card-body text-center'>
-          <p class='font-weight-normal fs-130 mb-1'><%= person.name %></p>
-          <% if person.class.method_defined? :character %>
-            <span class='dark-64 font-weight-light'><%= person.character %></span>
-          <% else %>
-            <span class='dark-64 font-weight-light'><%= person.job %></span>
-          <% end %>
-	  		</div>
-			</div>
-			<% end %>	
+<%= link_to person_path(person.id) do %>
+  <div class='card'>
+    <img class='card-img-top' src="<%= profile_image_src person %>" class='img-fluid'  alt="<%=person.name%>">
+		<div class='card-body text-center'>
+      <p class='font-weight-normal fs-130 mb-1'><%= person.name %></p>
+      <% if person.class.method_defined? :character %>
+      <span class='dark-64 font-weight-light'><%= person.character %></span>
+      <% else %>
+      <span class='dark-64 font-weight-light'><%= person.job %></span>
+      <% end %>
+	  </div>
+	</div>
+<% end %>	

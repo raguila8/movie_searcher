@@ -1,6 +1,7 @@
 module MoviesHelper
   def page_name
-    action_name if controller_name == 'movies'
+    return action_name if controller_name == 'movies' or controller_name == "people"
+    return 'genres#show' if controller_name == 'genres'
   end
 
   def navbar_class
@@ -39,6 +40,22 @@ module MoviesHelper
       @upcoming
     else
       nil
+    end
+  end
+
+  def movie_header_poster_image(poster_path)
+    if poster_path.nil?
+      "<img src='/assets/movie1-02.jpg' style='max-width:50%; height: auto;'>".html_safe
+    else
+      "<img src='#{ configurations_base_url }w500#{poster_path}' class='img-fluid'>".html_safe
+    end
+  end
+
+  def poster_image_src(poster_path)
+    if poster_path.nil?
+      "/assets/movie1-02.jpg"
+    else
+      "#{ configurations_base_url }h632#{poster_path}" 
     end
   end
 end

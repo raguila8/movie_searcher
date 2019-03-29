@@ -1,0 +1,13 @@
+<%= link_to movie_path(credit.id) do %>
+  <div class='card'>
+    <img class='card-img-top' src="<%= poster_image_src(credit.poster_path) %>" class='img-fluid'  alt="<%=credit.title%>">
+		<div class='card-body text-center'>
+      <p class='font-weight-normal fs-130 mb-1'><%= credit.title %></p>
+      <% if credit.class.method_defined? :character and not credit.character.nil?%>
+      <span class='dark-64 font-weight-light'><%= credit.character %></span>
+      <% else %>
+      <span class='dark-64 font-weight-light'><%= credit.job %></span>
+      <% end %>
+	  </div>
+	</div>
+<% end %>	

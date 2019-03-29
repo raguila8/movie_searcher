@@ -7,11 +7,11 @@
  
     <div id="navbarToggler" class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-			  <li class='nav-item <%= 'active' if (current_page?(action: 'home') or current_page?('/')) %>'>
+			  <li class='nav-item <%= 'active' if (current_page?(action: 'home', controller: 'movies') or current_page?('/')) %>'>
 				  <a class='nav-link' href="#">Discover</a>
 			  </li>
 
-        <li class='nav-item <%= 'active' if current_page?(action: 'index') %>'>
+        <li class='nav-item <%= 'active' if current_page?(action: 'index', controller: 'movies') %>'>
 				  <a class='nav-link' href="#">Browse</a>
 			  </li>
       </ul>

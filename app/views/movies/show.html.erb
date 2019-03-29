@@ -60,7 +60,7 @@
           </div>
           <% end %>
 
-          <% if not @movie.release_date.nil? %>
+          <% if not @movie.release_date.nil? and not @movie.release_date.empty? %>
           <div class='col-md-4 mb-4'>
             <p class='lead1 featured-data-cat'>Release Date</p>
             <span class='featured-data'>
@@ -81,8 +81,8 @@
         </div>
       </div>
 
-      <div class='col-md-4'>
-        <img src="<%= configurations_base_url %>w500<%= @movie.poster_path %>" class='img-fluid'>
+      <div class='col-md-4 text-center'>
+        <%=movie_header_poster_image(@movie.poster_path)%>
       </div>
     </div>
   </section>

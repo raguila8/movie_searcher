@@ -1,3 +1,4 @@
+<% if movie.cast.any? %>
 <!-- Cast section -->
 <section class='show-section cast-section mb-9'>
   <h1 class='display-5 mb-5'>Cast</h1>
@@ -9,7 +10,9 @@
     <% end %>
   </div>
 </section> <!--/ End cast section -->
+<% end %>
 
+<% if movie.crew.any? %>
 <!-- Crew section -->
 <section class='show-section crew-section mb-9'>
   <h1 class='display-5 mb-5'>Crew</h1>
@@ -21,7 +24,10 @@
     <% end %>
   </div>
 </section> <!--/ End crew section -->
+<% end %>
 
+
+<% if movie.images.any? %>
 <!-- Images section -->
 <section class='show-section images-section mb-9'>
   <h1 class='display-5 mb-5'>Images</h1>
@@ -34,7 +40,10 @@
     <% end %>
   </div>
 </section> <!--/ End images section -->
+<% end %>
 
+
+<% if movie.videos.any? %>
 <!-- Videos section -->
 <section class='show-section videos-section mb-9'>
   <h1 class='display-5 mb-5'>Videos</h1>
@@ -83,5 +92,6 @@
     <% end %>
     </div>
   <% end %>
-
+</section>
+<% end %>
 

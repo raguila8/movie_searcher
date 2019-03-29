@@ -1,0 +1,66 @@
+<div class='container'>
+  <section class='genre-header mb-9'>
+    <h1 class='display-4 mb-5 fancy-display'>
+      <%= @genre.name %>
+    </h1>
+	</section>
+
+	<section class='movies-list'>
+	  <div class='row'>
+      <div class='col-md-8'></div>
+			<div class='col-md-4 text-right'>
+			  <div class='grid-layout-toggles'>
+				  <span data-col=1>
+            <%= inline_svg '1-column-grid.svg'%>
+          </span>
+
+			    <span data-col=2>
+            <%= inline_svg '1-column-grid.svg', class: 'rotate-90'%>
+          </span>
+
+			    <span data-col=3>
+            <%= inline_svg '3-column-grid.svg'%>
+          </span>
+
+          <span class='active' data-col=4>
+            <%= inline_svg '4-column-grid.svg'%>
+          </span>
+			  </div>
+			</div>
+		</div>
+    <div class='row'>
+      <% @movies.each do |movie| %>
+        <div class='col-md-3 movie-list-item'>
+				  <div class='movie-poster-item'>
+	        <div class='position-relative movie-poster-container'>
+            <%= link_to '', movie_path(movie.id), class: 'movie-link' %>
+	          <img src="<%= configurations_base_url %>w500<%=movie.poster_path%>" class='img-fluid' data-backdrop="https://image.tmdb.org/t/p/original/<%=movie.backdrop_path%>" data-poster="<%= configurations_base_url %>w500<%=movie.poster_path%>">
+			      <div class='movie-meta'>
+              <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
+              <p><%=movie.status%></p>
+            </div>
+            <% if movie.trailers? %>
+            <ul class='movie-actions'>
+              <li class='trailer-btn video-toggle transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#videoModal'>
+                <span>
+                  <%= inline_svg 'baseline-play_circle_filled'%>
+                </span>
+              </li>
+            </ul>
+            <% end %>
+  		    </div>
+					</div>
+					<div class='movie-list-item-body d-none text-center'>
+            <p class='font-weight-normal fs-130 mb-1'>
+              <%= movie.title %>
+						</p>
+
+						<span class="dark-64 font-weight-light">
+              
+						</span>
+					</div>
+  	    </div>
+			<% end %>
+		</div>
+	</section>
+</div>

@@ -9,7 +9,7 @@
     <% end %>
     <span class='film-genres'>
       <% movie.genres.first(3).each do |genre| %>
-      <a href='#'><%= genre.name %></a>
+      <%= link_to genre.name, genre_path(genre.id) %>
       <% end %>
     </span>
 	</div>

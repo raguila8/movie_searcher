@@ -6,10 +6,12 @@ $(document).on('turbolinks:load', function() {
   }
 
   if ($('body').data('page') == 'show') {
-    $('.cast-carousel').slick({
+    $('.cast-carousel, .cast-credits-carousel, .crew-credits-carousel').slick({
       infinite: true,
-      slidesToShow: 3,
+      slidesToShow: 1,
       slidesToScroll: 1,
+      variableWidth: true,
+      centerMode: true,
       responsive: [
         {
           breakpoint: 992,
@@ -22,8 +24,11 @@ $(document).on('turbolinks:load', function() {
 
     $('.crew-carousel').slick({
       infinite: true,
-      slidesToShow: 3,
+      slidesToShow: 5,
       slidesToScroll: 1,
+      variableWidth: true,
+      centerMode: true,
+      centerPadding: '60px',
       responsive: [
         {
           breakpoint: 992,
@@ -52,11 +57,23 @@ $(document).on('turbolinks:load', function() {
 
     $('#all-tab').on('click', function() {
       $(this).find('.slick-carousel').slick('refresh');
-      console.log('clicked');
     });
 
     initShowVideos();
     initModalVideos();
+  }
+
+  if ($('body').data('page') == 'genres#show') {
+    $('.grid-layout-toggles > span').on('click', function() {
+      $previousGrid = $('.grid-layout-toggles span.active');
+      if ($previousGrid.is($(this))) {
+        return;
+      } else {
+        $previousGrid.removeClass('active');
+        $(this).addClass('active');
+        changeGridLayout($previousGrid.data('col'), $(this).data('col'));
+      }
+    });
   }
 
   $(function () {
@@ -157,5 +174,46 @@ function initShowVideos() {
     $('.video-card').on('click', function() {
       $videoSrc = $(this).data( "src" );
 		});
+  }
+}
+
+function changeGridLayout(oldGrid, newGrid) {
+  let classes_to_add = getClassesToAdd(oldGrid, newGrid);
+  $(".movie-list-item[class*='col-md-']").removeClass(function(index, css) {
+    return (css.match (/(^|\s)col-md-\S+/g) || []).join(' ');
+  }).addClass(classes_to_add);
+  
+}
+
+function getClassesToAdd(oldGrid, newGrid) {
+  switch(newGrid) {
+    case 1:
+      return "col-md-12"
+    case 2:
+      return "col-md-6"
+    case 3:
+      changeToThreeColumnGrid(oldGrid);
+      return "col-md-4"
+    case 4:
+      return "col-md-3"
+  }
+}
+
+function changeToThreeColumnGrid(oldGrid) {
+  switch(oldGrid) {
+    case 1:
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      $('.movie-list-item').addClass('mb-4').find('.movie-meta').hide();
+      $('.movie-list-item').each(function() {
+        $(this).find('img').attr('src', $(this).find('img').data('backdrop'));
+      });
+
+      $('.movie-list-item-body').addClass('d-block');
+      break;
   }
 }

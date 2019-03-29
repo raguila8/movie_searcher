@@ -22,7 +22,7 @@
 	</div>
   <div class="tab-pane fade" id="cast" role="tabpanel" aria-labelledby="cast-tab">
     <section class='show-section cast-section mb-9'>
-      <div class='card-columns'>
+      <div class='card-columns card-columns-4'>
         <% @movie.cast.each do |cast_member| %>
           <%= render partial: '/movies/person_tab_item', locals: { person: cast_member } %>
         <% end %>
@@ -31,7 +31,7 @@
   </div>
 	<div class="tab-pane fade" id="crew" role="tabpanel" aria-labelledby="crew-tab">
     <section class='show-section crew-section mb-9'>
-      <div class='card-columns'>
+      <div class='card-columns card-columns-4'>
         <% @movie.crew.each do |crew_member| %>
           <%= render partial: '/movies/person_tab_item', locals: { person: crew_member } %>
         <% end %>
@@ -39,7 +39,7 @@
     </section>
   </div>
   <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-    <div class='card-columns'>
+    <div class='card-columns card-columns-4'>
     <% @movie.images.each do |image| %>
     <div class='card'>
       <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
@@ -51,7 +51,7 @@
 	<div class="tab-pane fade pt-5" id="videos" role="tabpanel" aria-labelledby="videos-tab">
     <div class='row'>
       <% @movie.videos.each do |video| %>
-      <div class='col-sm-2 col-md-4 mb-4'>
+      <div class='col-sm-6 col-md-4 mb-4'>
       <div class='card video-card video-toggle' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= video.key %>" data-target='#videoModal' >
         <div class='position-relative video-card-img-container'>
           <img class="card-img-top img-fluid" src="https://img.youtube.com/vi/<%=video.key%>/maxresdefault.jpg" data-holder-rendered="true">
