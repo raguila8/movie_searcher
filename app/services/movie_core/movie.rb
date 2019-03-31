@@ -63,7 +63,7 @@ module MovieCore
     end
 
     def self.discover_movies_with_genre(genre)
-      query = {sort_by: "popularity.desc", include_adult: false, with_genres: genre }
+      query = {sort_by: "popularity.desc", include_adult: false, with_genres: genre, language: 'en-US' }
       response = Protocol::Request.where('discover/movie', CACHE_DEFAULTS, query)
       movies = response.fetch('results', []).map { |movie| MovieCore::Movie.new(movie) }
       [ movies, response[:errors] ]

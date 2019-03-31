@@ -3,64 +3,111 @@
     <h1 class='display-4 mb-5 fancy-display'>
       <%= @genre.name %>
     </h1>
-	</section>
+  </section>
 
-	<section class='movies-list'>
-	  <div class='row'>
-      <div class='col-md-8'></div>
-			<div class='col-md-4 text-right'>
-			  <div class='grid-layout-toggles'>
-				  <span data-col=1>
+  <section class='movies-list'>
+    <div class='row mb-4'>
+      <div class='col-lg-4'>
+        <div class='sort-options p-3 border-light-1'>
+          <p class='mb-1 pb-1 pl-8 pr-8 text-center font-weight-light dark-84'>
+            Sort
+          </p>
+          <div class='d-flex align-items-center'>
+            <div class='custom-select1 d-inline-block width-84' data-sort="popularity.desc">
+              <select class="movie-sorter-select">
+                <option data-sort-option="popularity.desc" value="0" selected>Popularity</option>
+                <option data-sort-option="release_date.desc" value="1">Release date</option>
+                <option data-sort-option="revenue.desc" value="2">Revenue</option>
+                <option data-sort-option="original_title.desc" value="3">Title</option>
+              </select>
+            </div>
+            <div class='sort-order d-inline-block text-center width-16' data-order='desc'>
+              <div class='sort-order-option' data-order-option='asc'>
+                <span>
+                  <%= inline_svg 'baseline-radio_button_checked.svg', class: 'd-none checked-radio'%>
+                  <%= inline_svg 'baseline-radio_button_unchecked.svg', class: 'unchecked-radio'%>
+                </span>
+                <span>
+                  <%= inline_svg 'baseline-arrow_upward.svg'%>
+                </span>
+              </div>
+              <div class='sort-order-option' data-order-option='desc'>
+                <span>
+                  <%= inline_svg 'baseline-radio_button_checked.svg', class: 'checked-radio'%>
+                  <%= inline_svg 'baseline-radio_button_unchecked.svg', class: 'd-none unchecked-radio'%>
+                </span>
+                <span>
+                  <%= inline_svg 'baseline-arrow_downward.svg', class: 'stubborn-svg'%>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='col-md-2'></div>
+      <div class='col-md-3 mt-2'>
+        <div class='movies-filter' data-filters='{"with_genres": "<%=@genre.id%>"}'>
+          
+        </div>
+      </div>
+      <div class='col-md-3 text-right mt-2'>
+        <div class='grid-layout-toggles p-3'>
+          <p class='mb-1 pb-1 border-bottom-light-1 text-center font-weight-light dark-84'>View</p>
+          <span data-col=1>
             <%= inline_svg '1-column-grid.svg'%>
           </span>
 
-			    <span data-col=2>
+          <span data-col=2>
             <%= inline_svg '1-column-grid.svg', class: 'rotate-90'%>
           </span>
 
-			    <span data-col=3>
+          <span data-col=3>
             <%= inline_svg '3-column-grid.svg'%>
           </span>
 
           <span class='active' data-col=4>
             <%= inline_svg '4-column-grid.svg'%>
           </span>
-			  </div>
-			</div>
-		</div>
-    <div class='row'>
+        </div>
+      </div>
+    </div>
+    <div class='row' id='movies-row'>
       <% @movies.each do |movie| %>
         <div class='col-md-3 movie-list-item'>
-				  <div class='movie-poster-item'>
-	        <div class='position-relative movie-poster-container'>
+          <div class='movie-poster-item'>
+            <div class='position-relative movie-poster-container'>
             <%= link_to '', movie_path(movie.id), class: 'movie-link' %>
-	          <img src="<%= configurations_base_url %>w500<%=movie.poster_path%>" class='img-fluid' data-backdrop="https://image.tmdb.org/t/p/original/<%=movie.backdrop_path%>" data-poster="<%= configurations_base_url %>w500<%=movie.poster_path%>">
-			      <div class='movie-meta'>
-              <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
-              <p><%=movie.status%></p>
+              <img src="<%= configurations_base_url %>original<%=movie.backdrop_path%>" class='img-fluid d-none' data-image-type='backdrop' onerror="this.onerror=null; this.src='/assets/backdrop_default.jpg'">
+	      <img src="<%= configurations_base_url %>w500<%=movie.poster_path%>" class='img-fluid' data-image-type='poster' onerror="this.onerror=null; this.src='/assets/movie1-02.jpg'">
+              <div class='movie-meta'>
+                <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
+              </div>
+              <% if movie.trailers? %>
+              <ul class='movie-actions'>
+                <li class='trailer-btn video-toggle transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#videoModal'>
+                  <span>
+                    <%= inline_svg 'baseline-play_circle_filled'%>
+                  </span>
+                </li>
+              </ul>
+              <% end %>
             </div>
-            <% if movie.trailers? %>
-            <ul class='movie-actions'>
-              <li class='trailer-btn video-toggle transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#videoModal'>
-                <span>
-                  <%= inline_svg 'baseline-play_circle_filled'%>
-                </span>
-              </li>
-            </ul>
-            <% end %>
-  		    </div>
-					</div>
-					<div class='movie-list-item-body d-none text-center'>
-            <p class='font-weight-normal fs-130 mb-1'>
+          </div>
+          <div class='movie-list-item-body d-none text-center p-3'>
+            <p class='font-weight-normal fs-140 mb-0'>
               <%= movie.title %>
-						</p>
-
-						<span class="dark-64 font-weight-light">
-              
-						</span>
-					</div>
-  	    </div>
-			<% end %>
-		</div>
-	</section>
+            </p>
+            <span class="dark-64 font-weight-light">
+              <%= movie.release_date.to_time.strftime("%B %e, %Y") %>
+            </span>
+            <p class='font-weight-normal d-none dark-54 movie-overview line-clamp mt-3'>
+              <%= movie.overview %>
+            </p>
+          </div>
+  	</div>
+      <% end %>
+    </div>
+  </section>
 </div>
+
+
