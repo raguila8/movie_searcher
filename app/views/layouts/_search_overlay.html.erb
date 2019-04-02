@@ -1,0 +1,21 @@
+<!-- The overlay -->
+<div id="fullscreen-search" class="overlay d-none">
+  <header>
+    <form method="get" id="searchform" autocomplete="off">
+      <input type="text" name="s" id="search" placeholder="Search Here" />
+    </form>
+
+    <!-- Button to close the overlay navigation -->
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+  </header>
+  <!-- Overlay content -->
+  <div class="overlay-content">
+      <div class='pt-2 search-content' data-searched=false>
+        <div class='col-md-4 offset-md-4'>
+          <img src='/assets/movie_night.svg' class='img-fluid'>
+          <p class='dark-64 lead3 mt-4'> Search for any movie, actor or crew member </p>
+        </div>
+    </div>
+  </div>
+</div>

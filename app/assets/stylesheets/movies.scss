@@ -26,6 +26,13 @@ $gold-dark2: darken($gold, 15%);
 $gold-dark3: darken($gold, 20%);
 $gold-dark4: darken($gold, 25%);
 
+$gold-light1: lighten($gold, 10%);
+$gold-light2: lighten($gold, 15%);
+$gold-light3: lighten($gold, 20%);
+$gold-light4: lighten($gold, 25%);
+$gold-light5: lighten($gold, 30%);
+
+
 $red: #e0041d;
 
 $background-light-grey: #a8a8a8;
@@ -33,9 +40,25 @@ $dark-transparent-bg: rgba(0,0,0,0.75);
 
 $light-white: rgba(227, 223, 207, 1);
 
+// Loader
+$loader-scale: 36px;
+$loader-speed: 2s;
+
+
+// quick and easy complementary colors
+$loader-angle: 25;
+$loader-color-element: $gold-light1;
+$loader-color-background: $gold-light1;
+
+
 .dark-84 {
   color: rgba(0,0,0,0.84);
 }
+
+.dark-74 {
+  color: rgba(0,0,0,0.74);
+}
+
 
 .dark-64 {
   color: rgba(0,0,0,0.64);
@@ -45,12 +68,61 @@ $light-white: rgba(227, 223, 207, 1);
   color: rgba(0,0,0,0.54);
 }
 
+.background-light-gold {
+  background-color: $gold-light5;
+}
+
 
 body {
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 
+/* ------------------------------------------------------------------
+ Loader
+ ---------------------------------------------------------------- */
+
+@keyframes loader-spin {
+  0% {
+    transform: rotate( 0deg );
+  }
+  100% {
+    transform: rotate( 360deg );
+  }
+}
+
+.loader {
+  position: absolute;
+  margin: -#{$loader-scale/2} 0 0 -#{$loader-scale/2};
+  border: #{$loader-scale*0.1} solid $loader-color-element;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: $loader-scale;
+  height: $loader-scale;
+  left: 50%;
+  top: 10%;
+  animation: loader-spin $loader-speed linear infinite reverse;
+  // taken and tweaked from: https://css-tricks.com/gooey-effect/
+  filter: url(#goo);
+  // hides a 1px render error in some browsers that
+  // happens with transformed children inside an
+  // overflow hidden parent. only a real issue
+  // without the filter
+  box-shadow: 0 0 0 1px $loader-color-element inset;
+
+  &:before {
+    content: "";
+    position: absolute;
+    animation: loader-spin $loader-speed cubic-bezier(.59,.25,.4,.69) infinite;
+    background: $loader-color-element;
+    transform-origin: top center;
+    border-radius: 50%;
+    width: 150%;
+    height: 150%;
+    top: 50%;
+    left: -12.5%;
+  }
+}
 
 /* --------------------------------------------------------------
   Navigation
@@ -60,7 +132,7 @@ body {
   height: 80px;
   background-color: transparent;
   border: none;
-  color: white;
+  color: $light-white;
   z-index: 100;
   transition: background-color 1s ease 0s;
 }
@@ -73,8 +145,13 @@ body {
   .navbar-nav {
     > li {
       > a {
-        color: #fff;
+        color: $light-white;
         margin: 10px 5px 5px 5px;
+        transition: all 0.5s ease;
+
+        &:hover {
+          color: $gold;
+        }
       }
     }
   }
@@ -82,6 +159,15 @@ body {
   .navbar-collapse.collapse.in ul {
     background-color: #fff;
   }
+
+  svg.nav-search {
+    fill: $light-white;
+    
+    &:hover {
+      fill: $gold;
+    }
+  }
+
 }
 
 .navbar.solid {
@@ -98,9 +184,21 @@ body {
       > a {
         color: $dark64;
         transition: color 1s ease 0s;
+
+        &:hover {
+          color: $gold-dark4;
+        }
       }
     } //end li
   } //end .navbar-nav
+
+  svg.nav-search {
+    fill: $dark64;
+    
+    &:hover {
+      fill: $gold-dark4;
+    }
+  }
 }
 
 /* --------------------------------------------------------
@@ -125,6 +223,10 @@ body {
 /* ------------------------------------------------------------
  Widths
  ------------------------------------------------------------ */
+.width-100 {
+  width: 100%;
+}
+
 .width-84 {
   width: 84%;
 }
@@ -238,6 +340,34 @@ body {
   font-weight: 300;
 }
 
+.lead3 {
+  font-size: 1.40rem;
+  font-weight: 300;
+}
+
+.lead4 {
+  font-size: 1.45rem;
+  font-weight: 300;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.light-link {
+  color: $light-white;
+  fill: $light-white;
+
+  &:hover {
+    color: $gold !important;
+    fill: $gold !important;
+  }
+}
+
+.font-weight-500 {
+  font-weight: 500;
+}
+
 /* --------------------------------------
  Links
  ---------------------------------------- */
@@ -320,6 +450,10 @@ a {
   padding-top: 5rem;
 }
 
+.height-100 {
+  height: 100%;
+}
+
 /* --------------------------------------------------------------------
  Borders
  -------------------------------------------------------------------------*/
@@ -372,6 +506,113 @@ select.form-control {
   .btn {
     transition: color 0.3s ease 0s;
   }
+}
+
+/* -------------------------------------------------------------------
+ Search overlay
+---------------------------------------------------------------------- */
+.overlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  overflow-y: hidden;
+  transition: 0.5s;
+  z-index: 999;
+}
+.overlay-content {
+  text-align: center;
+  padding: 75px 30px 60px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+
+  .search-content {
+    height: calc(100vh - 60px - 15px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+.overlay a {
+  text-decoration: none;
+  transition: 0.3s;
+}
+.overlay a:hover, .overlay a:focus {
+  color: $gold;
+}
+.overlay .closebtn {
+  color: $dark54;
+  font-size: 60px;
+
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  z-index: 1002;
+}
+#search{
+  text-align: center;
+  border: none;
+  font-size: 45px;
+  font-weight: 700;
+  color: $dark64;
+  border-bottom: 7px solid $gold-light1;
+  z-index: 1001;
+}
+#search:focus{
+  outline: 0!important; 
+}
+@media screen and (max-height: 450px) {
+  .overlay {overflow-y: auto;}
+  .overlay a {font-size: 20px}
+  .overlay .closebtn {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
+  }
+}
+
+#search {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 60px;
+  left: 60px;
+  width: calc(100% - 120px);
+  height: 60px;
+  margin: auto;
+  padding: 0 15px;
+}
+
+@media (min-width: 568px) {
+  #search {
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 600px;
+    font-size: 1.5rem;
+  }
+ 
+  .overlay .closebtn {
+    right: 20px;
+  }
+}
+
+#searchTabs {
+  width: 84%;
+}
+
+.lock-scroll {
+  height: 100vh;
+  overflow: hidden;
 }
 
 
@@ -1241,6 +1482,19 @@ body[data-page="show"] {
     }
   }
 
+  .year-filter {
+
+    .select-items {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+  }
+
+  .movies-filter {
+    min-height: 114px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
   .grid-layout-toggles {
     display: inline-block;
     border: 1px solid rgba(0,0,0,0.1);
@@ -1256,6 +1510,12 @@ body[data-page="show"] {
       svg {
         fill: $gold;
       }
+    }
+  }
+
+  @media(max-width: 768px) {
+    .grid-layout-toggles {
+      display: none;
     }
   }
 

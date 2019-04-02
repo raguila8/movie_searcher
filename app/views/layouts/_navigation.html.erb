@@ -1,26 +1,20 @@
 <nav class='navbar <%= navbar_class %> navbar-expand-lg'>
   <div class='container'>
-	  <a class="navbar-brand" href="#">Movie Searcher</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
+    <%= link_to "Movie Searcher", root_path, class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
  
     <div id="navbarToggler" class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-			  <li class='nav-item <%= 'active' if (current_page?(action: 'home', controller: 'movies') or current_page?('/')) %>'>
-				  <a class='nav-link' href="#">Discover</a>
-			  </li>
-
         <li class='nav-item <%= 'active' if current_page?(action: 'index', controller: 'movies') %>'>
-				  <a class='nav-link' href="#">Browse</a>
-			  </li>
+          <a class='nav-link color-transition-03' href="#">Browse</a>
+        </li>
       </ul>
 
-			<form class="form-inline my-2 my-lg-0">
-			  <input class="form-control mr-sm-2" type="search" placeholder="Search">
-			  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-			</form>
-
+      <span class='transition-color-03' onclick="openNav()">
+        <%= inline_svg 'baseline-search.svg', class: 'pointer nav-search' %>
+      </span>
     </div><!--/.nav-collapse -->
   </div>
 </nav>

@@ -9,19 +9,6 @@ $(document).on('turbolinks:load', function() {
     initCustomSelect();
   }
 
-  searchOnInput();
-
-  /* -----------------------
-    Search overlay
-  ------------------------- */
-  function openNav() {
-     document.getElementById("fullscreen-search").style.height = "100%";
-  }
-  function closeNav() {
-     document.getElementById("fullscreen-search").style.height = "0%";
-  }
-
-
   if ($('body').data('page') == 'show') {
     $('.cast-carousel, .cast-credits-carousel, .crew-credits-carousel').slick({
       infinite: true,
@@ -333,8 +320,6 @@ function initCustomSelect() {
       c.innerHTML = selElmnt.options[j].innerHTML;
       if (selElmnt.classList.contains("movie-sorter-select")) {
         c.setAttribute("data-sort-option", selElmnt.options[j].getAttribute("data-sort-option"));
-      } else if (selElmnt.classList.contains("year-filter-select")) {
-        c.setAttribute("data-filter-option", selElmnt.options[j].getAttribute("data-filter-option"));
       }
       if ( j == 0) {
         c.setAttribute('class', 'same-as-selected');
@@ -361,9 +346,9 @@ function initCustomSelect() {
               sortMovies(sortBy);
             } else if (customSelect.hasAttribute('data-filter') && customSelect.getAttribute('data-filter') !== this.getAttribute('data-filter-option')) {
               let myData = $('.movies-filter').data('filters');
-              myData["primary_release_year"] = this.getAttribute('data-filter-option');
-              $('.movies-filter').data('filters', myData).attr('data-filters', myData);
-              sortMovies($('.sort-options .custom-select1').data('sort'));
+              my myData["year"] = 2019;
+              console.log(myData);
+              console.log($('.movies-filter').data('filters').with_genres);
             }
             break;
           }
@@ -416,7 +401,7 @@ function sortMovies(sortBy) {
       filtersString = filtersString + "&" + property + "=" + filters[property];
     }
   }
-  console.log(filtersString);
+  
 
   var settings = {
     "async": true,
@@ -468,257 +453,4 @@ function renderMovieHTML(movie) {
     </div>
   </div>
   `;
-}
-
-/* --------------------------------------------------------------------
-    Search overlay
-  -------------------------------------------------------------------- */
-function openNav() {
-  document.getElementById("fullscreen-search").classList.remove('d-none');
-  document.getElementById("search").focus();
-  document.getElementsByTagName('body')[0].classList.add('lock-scroll');
-}
-function closeNav() {
-  document.getElementById("fullscreen-search").classList.add('d-none');
-  $('.search-content').data('searched', false);
-  $('.search-content').html("<div class='col-md-4 offset-md-4'><img src='/assets/movie_night.svg' class='img-fluid'><p class='dark-64 lead3 mt-4'> Search for any movie, actor or crew member </p></div>");
-  $('#search').val('');
-   document.getElementsByTagName('body')[0].classList.remove('lock-scroll');
-}
-
-function searchOnInput() {
-  var changeTimer = false;
-  var query ="";
-  var resource = "";
-  var $content = $('.search-content');
-  $('#search').on('input', function() {
-    if ($(this).val() != "") {
-      if(changeTimer !== false) clearTimeout(changeTimer);
-      query = $(this).val();
-      changeTimer = setTimeout(function(){
-        if (!$content.data('searched') || $content.find('#movies-searched-tab').hasClass('active')) {
-          resource = "movie";
-        } else {
-          resource = "person";
-        }
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-           "url": "https://api.themoviedb.org/3/search/" + resource + "?include_adult=false&page=1&query=" + query + "&language=en-US&api_key=028d977d1d63154051352db890f31c62",
-           "method": "GET",
-           "headers": {},
-           "data": "{}",
-           "beforeSend": function() {
-             if (!$(".search-content").data('searched')) {
-               $('.search-content').html(loaderHTML());
-             }
-           }
-        };
-
-        $.ajax(settings).
-          done(function (response) {
-            if (!$content.data('searched')) {
-              // display movie and person tabs. Show movies
-              $content.html(searchTabsHTML());
-              $content.find('#searched-movies-list').html(searchedMoviesHTML(response.results));
-              $content.find('#movies-searched-tab').data('loaded', true).attr('data-loaded', true);
-            } else {
-              if ($content.find('#movies-searched-tab').hasClass('active')) {
-                $content.find('#searched-movies-list').html(searchedMoviesHTML(response.results));
-                $content.find('#movies-searched-tab').data('loaded', true).attr('data-loaded', true);
-                $content.find('#people-searched-tab').data('loaded', false).attr('data-loaded', false);
-              } else {
-                //showSearchedPeople(response.results);
-                $content.find('#searched-people-list').html(searchedPeopleHTML(response.results));
-                $content.find('#people-searched-tab').data('loaded', true).attr('data-loaded', true);
-                $content.find('#movies-searched-tab').data('loaded', false).attr('data-loaded', false);
-              }
-            }
-
-            $content.data('searched', true);
-          });
-
-        changeTimer = false;
-      },300);
-    }
-  });
-}
-
-function searchTabsHTML() {
-  return `
-    <ul class="nav nav-tabs" id="searchTabs" role="tablist">
-      <li class="nav-item">
-        <a onclick="searchMovies()" class="nav-link active" id="movies-searched-tab" data-loaded=false data-toggle="tab" href="#movies-searched" role="tab" aria-controls="movies" aria-selected="true">Movies</a>
-      </li>
-      <li class="nav-item">
-        <a onclick="searchPeople()" class="nav-link" id="people-searched-tab" data-loaded=false data-toggle="tab" href="#people-searched" role="tab" aria-controls="people" aria-selected="false">People</a>
-      </li>
-    </ul>
-
-    <div class="tab-content" id="searchedTabContent">
-      <div class="tab-pane fade show active pt-5" id="movies-searched" role="tabpanel" aria-labelledby="movies-tab">
-        <div class='row' id='searched-movies-list'></div>
-      </div>
-      <div class="tab-pane fade pt-5" id="people-searched" role="tabpanel" aria-labelledby="people-tab">
-        <div class='row' id='searched-people-list'></div>
-      </div>
-    </div>
-  `;
-}
-
-function loaderHTML() {
-  return `
-  <div class='position-relative width-100 height-100'>
-  <div class="loader">
-    <svg>
-      <defs>
-        <filter id="goo">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
-          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 5 -2" result="gooey" />
-          <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
-        </filter>
-      </defs>
-    </svg>
-  </div>
-  </div>
-  `;
-}
-
-function searchedMoviesHTML(results) {
-  var html = "";
-  for (var i = 0; i < results.length; i++) {
-    html += searchedMovieHTML(results[i]);
-  }
-  return html;
-}
-
-function searchedPeopleHTML(results) {
-  var html = "";
-  for (var i = 0; i < results.length; i++) {
-    html += searchedPersonHTML(results[i]);
-  }
-  return html;
-}
-
-
-function searchedMovieHTML(movie) {
-  return `
-  <div class="col-md-12 movie-list-item row mb-4">
-    <div class="movie-poster-item col-md-3">
-      <div class="position-relative">
-        <a href="/movies/${movie['id']}">
-          <img src="https://image.tmdb.org/t/p/original${movie['backdrop_path']}" class="img-fluid" data-image-type="poster" onerror="this.onerror=null; this.src='/assets/backdrop_default.jpg'">
-        </a>
-      </div>
-    </div>
-
-    <div class="movie-list-item-body p-3 col-md-8 text-left">
-      <a href="/movies/${movie.id}">
-        <p class="font-weight-normal fs-140 mb-0">
-          ${ movie.title }
-        </p>
-      </a>
-      <span class="dark-64 font-weight-light">
-        ${ new Date(movie['release_date']).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' }) }
-      </span>
-      <p class="font-weight-normal dark-54 movie-overview line-clamp mt-3">
-        ${ movie['overview'] }
-      </p>
-    </div>
-  </div>
-  `;
-}
-
-function searchedPersonHTML(person) {
-  var knownfor = person.known_for;
-  var knownforHTML = "";
-  var has_knownfor = false;
-
-  if (knownfor.length > 0) {
-    for (var j = 0; j < knownfor.length; j++) {
-      if (knownfor[j].media_type == "movie") {
-        has_knownfor = true;
-        knownforHTML += "<a href='/movies/" + knownfor[j].id + "'><span class='badge badge-light dark-84 font-weight-normal background-light-gold mr-2'>" + knownfor[j].title + "</span></a>";
-      }
-    }
-  } 
-
-  html =  `
-  <div class="movie-list-item mb-4 col-md-6 row">
-    <div class="movie-poster-item col-md-5">
-      <div class="position-relative">
-        <a href='/person/${person.id}'">
-          <img src="https://image.tmdb.org/t/p/w185${person['profile_path']}" class="img-fluid" data-image-type="profile" onerror="this.onerror=null; this.src='/assets/default-profile-icon-w185.jpg'">
-        </a>
-      </div>
-    </div>
-    <div class="movie-list-item-body p-3 p-1 col-md-7 text-left">
-      <a href="/person/${person.id}">
-      <p class="font-weight-normal fs-140 mb-0">
-        ${person.name}
-      </p>
-      </a>
-  `;
-
-  if (has_knownfor) {
-    html += `
-      <span class="dark-64 font-weight-light mb-2">
-        Known for:
-      </span>
-      <div class='known-for'>
-        ${knownforHTML}
-      </div></div></div>
-    `;
-  } else {
-    html += "</div></div>";
-  }
-
-  return html;
-}
-
-function searchMovies() {
-  var query = $('#search').val();
-  if (!$('.search-content').find('#movies-searched-tab').data('loaded')) {
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-       "url": "https://api.themoviedb.org/3/search/movie?include_adult=false&page=1&query=" + query + "&language=en-US&api_key=028d977d1d63154051352db890f31c62",
-       "method": "GET",
-       "headers": {},
-       "data": "{}",
-       "beforeSend": function() {
-         
-       }
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-      $('#searched-movies-list').html(searchedMoviesHTML(response.results));
-      $('#movies-searched-tab').data('loaded', true).attr('data-loaded', true);
-    });
-  }
-}
-
-
-function searchPeople() {
-  var query = $('#search').val();
-
-  if (!$('.search-content').find('#people-searched-tab').data('loaded')) {
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-       "url": "https://api.themoviedb.org/3/search/person?include_adult=false&page=1&query=" + query + "&language=en-US&api_key=028d977d1d63154051352db890f31c62",
-       "method": "GET",
-       "headers": {},
-       "data": "{}",
-       "beforeSend": function() {
-         
-       }
-    };
-
-    $.ajax(settings).done(function (response) {
-      $('#searched-people-list').html(searchedPeopleHTML(response.results));
-      $('#people-searched-tab').data('loaded', true).attr('data-loaded', true);
-    });
-  }
 }
