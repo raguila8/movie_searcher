@@ -12,7 +12,13 @@
   </head>
 
   <body data-page="<%= page_name %>">
+    <%#= render 'layouts/sidenav' %>
+
     <%= render 'layouts/navigation' %>
-    <%= yield %>
+    <%= render 'layouts/sidenav' %>
+
+     <div id='main' class="<%= 'pt-70px' if action_name != "home" %>">
+      <%= yield %>
+    </div>
   </body>
 </html>

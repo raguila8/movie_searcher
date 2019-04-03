@@ -37,6 +37,10 @@ $red: #e0041d;
 
 $background-light-grey: #a8a8a8;
 $dark-transparent-bg: rgba(0,0,0,0.75);
+$gold38: rgba(198,169,114, 0.38);
+$gold42: rgba(198,169,114, 0.42);
+
+
 
 $light-white: rgba(227, 223, 207, 1);
 
@@ -129,12 +133,27 @@ body {
  ----------------------------------------------------------------- */
 
 .navbar {
-  height: 80px;
+  height: 50px;
   background-color: transparent;
   border: none;
   color: $light-white;
   z-index: 100;
   transition: background-color 1s ease 0s;
+
+  .nav-item {
+    cursor: pointer;
+    
+    &:hover {
+      svg {
+        fill: $gold;
+      }
+    }
+
+    svg {
+      fill: $light-white;
+      transition: fill 0.3s ease 0s;
+    }
+  }
 }
 
 .navbar {
@@ -172,6 +191,8 @@ body {
 
 .navbar.solid {
   background-color: #fff;
+  -webkit-box-shadow: 0 2px 2px -2px rgba(0,0,0,.15);
+  box-shadow: 0 2px 2px -2px rgba(0,0,0,.15);
   transition: background-color 1s ease 0s;
 
   .navbar-brand {
@@ -192,14 +213,127 @@ body {
     } //end li
   } //end .navbar-nav
 
-  svg.nav-search {
-    fill: $dark64;
-    
+
+  .nav-item {
     &:hover {
-      fill: $gold-dark4;
+      svg {
+        fill: $gold-dark4;
+      }
+    }
+
+    svg {
+      fill: $dark64;
     }
   }
 }
+
+.nav-item {
+  cursor: pointer;
+    
+  &:hover {
+    svg {
+      fill: $gold;
+    }
+  }
+
+  svg {
+    fill: $light-white;
+    transition: fill 0.3s ease 0s;
+  }
+}
+
+
+
+.navbar.solid, .sidenav {
+  .nav-item {
+    &:hover {
+      svg {
+        fill: $gold-dark4;
+      }
+    }
+
+    svg {
+      fill: $dark64;
+    }
+  }
+
+}
+
+
+/* ----------------------------------------------------------
+ Sidenav
+------------------------------------------------------------- */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 50px;
+  left: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 20px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: $dark64;
+  display: block;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: $gold38;
+    svg {
+      fill: rgba(0,0,0,0.64);
+    }
+  }
+}
+
+.sidenav a.active {
+  color: $gold-dark4;
+  background-color: $gold38;
+  svg {
+    fill: $gold-dark4;
+  }
+
+}
+
+.sidenav a:hover {
+  color: $dark64;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+#main {
+  transition: margin-left .5s;
+}
+
+.nav-section-divider {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  margin: 12px 0px 12px 0px;
+}
+
+.sidenav-item {
+  svg {
+    fill: rgba(0,0,0,0.64);
+  }
+}
+
 
 /* --------------------------------------------------------
   Tooltip
@@ -233,6 +367,10 @@ body {
 
 .width-16 {
   width: 16%;
+}
+
+.max-width-94 {
+  max-width: 94%;
 }
 
 /* ----------------------------------------------------------------
@@ -448,6 +586,10 @@ a {
 
 .pt-9 {
   padding-top: 5rem;
+}
+
+.pt-70px {
+  padding-top: 70px;
 }
 
 .height-100 {

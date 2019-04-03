@@ -1,0 +1,38 @@
+<div id="sidenav" class="sidenav">
+  <%= link_to discover_path("trending") do %>
+    <span class='sidenav-item'>
+      <%= inline_svg 'trending.svg', class: 'mr-1' %>
+      Trending
+    </span>
+  <% end %>
+
+  <%= link_to discover_path("popular") do %>
+    <span class='sidenav-item'>
+      <%= inline_svg 'popular.svg', class: 'mr-1' %>
+      Popular
+    </span>
+  <% end %>
+
+  <%= link_to discover_path("now-playing") do %>
+    <span class='sidenav-item'>
+      <%= inline_svg 'now-playing.svg', class: 'mr-1' %>
+      Now playing
+    </span>
+  <% end %>
+
+  <%= link_to discover_path("top-rated") do %>
+    <span class='sidenav-item'>
+      <%= inline_svg 'top-rated.svg', class: 'mr-1' %>
+      Top rated
+    </span>
+  <% end %>
+
+  <%= link_to discover_path("upcoming") do %>
+    <span class='sidenav-item'>
+      <%= inline_svg 'upcoming.svg', class: 'mr-1' %>
+      Upcoming
+    </span>
+  <% end %>
+
+  <div class="nav-section-divider"></div>
+</div>

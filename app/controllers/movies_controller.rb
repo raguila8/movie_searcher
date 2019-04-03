@@ -1,4 +1,6 @@
 class MoviesController < ApplicationController
+  include DiscoverHelper
+  before_action :discover_collection_exists, only: [:discover]
   def home
     cache_params = {expires_in: 1.days, force: false}
     @trending_movies = MovieCore::Movie.trending(cache_params, 5)[0]
@@ -13,5 +15,20 @@ class MoviesController < ApplicationController
   end
 
   def index
+  end
+
+  def discover
+    cache_params = {expires_in: 1.days, force: false}
+    @movies = MovieCore::Movie.send(params[:string].gsub("-", "_"), cache_params, 20)[0]
+  end
+
+  private
+
+  def discover_collection_exists
+    if !discover_collections.include? params[:string]
+      raise ActionController::RoutingError.new('Not Found')
+    else
+      @collection_name = params[:string].capitalize.gsub("-", " ")
+    end
   end
 end

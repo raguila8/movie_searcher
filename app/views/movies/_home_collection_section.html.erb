@@ -4,31 +4,31 @@
       <h1 class='display-5'><%= section %></h1>
     </div>
     <div class='col-4 text-center justify-content-center'>
-      <%= link_to '#', class: 'btn btn-text font-weight-600' do %>
+      <%= link_to discover_path(section.downcase.gsub(/\s+/, "-")), class: 'btn btn-text font-weight-600' do %>
         <div class='btn-content'>
-			    <span class='btn-text mr-1'>
-			    	View all
-			    </span>
+	  <span class='btn-text mr-1'>
+	    View all
+	  </span>
           <span class='btn-svg-container'>
-				    <%= inline_svg 'outline-arrow_right_alt', class: 'btn-svg' %>
-			    </span>
-		    </div>
+	    <%= inline_svg 'outline-arrow_right_alt', class: 'btn-svg' %>
+	  </span>
+        </div>
       <% end %>
     </div>
   </div>
  
   <div class='row'>
-	  <% home_collection(section).each do |movie| %>
+    <% home_collection(section).each do |movie| %>
     <div class='col-md-4 movie-poster-item'>
-	    <div class='position-relative movie-poster-container'>
+      <div class='position-relative movie-poster-container'>
         <%= link_to '', movie_path(movie.id), class: 'movie-link' %>
-	      <img src="<%= configurations_base_url %>w500<%=movie.poster_path%>" class='img-fluid'>
-			  <div class='movie-meta'>
-          <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
-          <p><%=movie.status%></p>
-        </div>
-        <% if movie.trailers? %>
-        <ul class='movie-actions'>
+	<img src="<%= configurations_base_url %>w500<%=movie.poster_path%>" class='img-fluid'>
+          <div class='movie-meta'>
+            <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
+            <p><%=movie.status%></p>
+          </div>
+          <% if movie.trailers? %>
+          <ul class='movie-actions'>
           <li class='trailer-btn video-toggle transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#videoModal'>
             <span>
               <%= inline_svg 'baseline-play_circle_filled'%>
@@ -36,8 +36,8 @@
           </li>
         </ul>
         <% end %>
-  		</div>
-  	</div>
+      </div>
+    </div>
     <% end %>
   </div>
 </section>

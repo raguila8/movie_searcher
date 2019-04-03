@@ -5,8 +5,7 @@ module MoviesHelper
   end
 
   def navbar_class
-    return "fixed-top" if page_name == "home"
-    return "solid" if page_name == "show" or page_name == "genres#show"
+    return "solid" if action_name != "home"
   end
  
   def home_carousel_item_html(movie, index)

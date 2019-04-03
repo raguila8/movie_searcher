@@ -1,4 +1,6 @@
 $(document).on('turbolinks:load', function() {
+  $(window).unbind('scroll');
+
   if ($('body').data('page') == 'home') {
     initTransparentNavbar();
     initModalVideos();
@@ -123,13 +125,13 @@ $(document).on('turbolinks:load', function() {
 	------------------------------------------------------------------ */
 function initTransparentNavbar() {
   // Transition effect for navbar 
-	$(window).scroll(function() {
+  $(window).scroll(function() {
     // checks if window is scrolled more than 2px, adds/removes solid class
-	  if($(this).scrollTop() > 2) { 
-		  $('.navbar').addClass('solid');
-		} else {
-		  $('.navbar').removeClass('solid');
-	  }
+    if($(this).scrollTop() > 2) { 
+      $('.navbar').addClass('solid');
+    } else {
+      $('.navbar').removeClass('solid');
+    }
   });
 }
 
@@ -720,5 +722,20 @@ function searchPeople() {
       $('#searched-people-list').html(searchedPeopleHTML(response.results));
       $('#people-searched-tab').data('loaded', true).attr('data-loaded', true);
     });
+  }
+}
+
+/* ----------------------------------------------------------------
+ Open sidenav
+----------------------------------------------------------------- */
+
+function toggleSidenav() {
+  if (document.getElementById("sidenav").style.width != "250px") {
+    document.getElementById("sidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  } else {
+    document.getElementById("sidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+
   }
 }

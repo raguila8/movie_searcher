@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'movies/home', to: 'movies#home', as: :home
   get 'movies/:id', to: 'movies#show', as: :movie
   get 'movies/index', to: 'movies#index', as: :index
+  get 'movies/discover/:string', to: 'movies#discover', as: :discover
 
   get 'person/:id', to: 'people#show', as: :person
   root 'movies#home'

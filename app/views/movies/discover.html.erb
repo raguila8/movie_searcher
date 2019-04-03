@@ -1,0 +1,49 @@
+<div class='container-fluid max-width-94'>
+  <section class='genre-header mb-9'>
+    <h1 class='display-4 mb-5 fancy-display'>
+      <%= @collection_name %>
+    </h1>
+  </section>
+
+
+  <section class='movies-list'>
+    <div class='row' id='movies-row'>
+      <% @movies.each do |movie| %>
+        <div class='col-lg-2 col-sm-3 col-4 movie-list-item'>
+          <div class='movie-poster-item'>
+            <div class='position-relative movie-poster-container'>
+            <%= link_to '', movie_path(movie.id), class: 'movie-link' %>
+              <img src="<%= configurations_base_url %>original<%=movie.backdrop_path%>" class='img-fluid d-none' data-image-type='backdrop' onerror="this.onerror=null; this.src='/assets/backdrop_default.jpg'">
+	      <img src="<%= configurations_base_url %>w500<%=movie.poster_path%>" class='img-fluid' data-image-type='poster' onerror="this.onerror=null; this.src='/assets/movie1-02.jpg'">
+              <div class='movie-meta'>
+                <h5 class='line-clamp line-clamp-3' ><%=movie.title%></h5>
+              </div>
+              <% if movie.trailers? %>
+              <ul class='movie-actions'>
+                <li class='trailer-btn video-toggle transition-color-03' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= movie.get_a_trailer.key %>" data-target='#videoModal'>
+                  <span>
+                    <%= inline_svg 'baseline-play_circle_filled'%>
+                  </span>
+                </li>
+              </ul>
+              <% end %>
+            </div>
+          </div>
+          <div class='movie-list-item-body d-none text-center p-3'>
+            <p class='font-weight-normal fs-140 mb-0'>
+              <%= movie.title %>
+            </p>
+            <span class="dark-64 font-weight-light">
+              <%= movie.release_date.to_time.strftime("%B %e, %Y") %>
+            </span>
+            <p class='font-weight-normal d-none dark-54 movie-overview line-clamp mt-3'>
+              <%= movie.overview %>
+            </p>
+          </div>
+  	</div>
+      <% end %>
+    </div>
+  </section>
+</div>
+
+
