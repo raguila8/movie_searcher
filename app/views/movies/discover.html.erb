@@ -1,15 +1,32 @@
 <div class='container-fluid max-width-94'>
-  <section class='genre-header mb-9'>
-    <h1 class='display-4 mb-5 fancy-display'>
+  <section class='genre-header mb-6'>
+    <h1 class='display-4 mb-4 fancy-display'>
       <%= @collection_name %>
     </h1>
   </section>
 
 
-  <section class='movies-list'>
-    <div class='row' id='movies-row'>
+  <section class='movies-list' >
+    <div class='row mb-4 justify-content-start align-items-center'>
+      <div class='flex-basis-250px mr-2 pt-2 pb-2'>
+        <div class='layout-toggles d-flex align-items-center'>
+          <span class='pl-8 pr-8 text-center font-weight-normal dark-54 flex-basis-60px'>View</span>
+          <div class='custom-select1 d-inline-block width-200px' data-view="poster-compact">
+            <select class="layout-toggles-select">
+              <option data-layout-option="poster-compact" value="0" selected>Poster compact</option>
+              <option data-layout-option="backdrop-compact" value="1">Backdrop compact</option>
+              <option data-layout-option="poster-with-overview" value="2">Compact overview</option>
+              <option data-layout-option="full-width-overview" value="3">Full width overview</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class='row infinite-scroll' id='movies-row' data-page=1 data-list="collection" data-collection="<%=@collection_name.downcase.gsub(" ", "_")%>">
       <% @movies.each do |movie| %>
-        <div class='col-lg-2 col-sm-3 col-4 movie-list-item'>
+        <div class='col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6 mb-4 movie-list-item'>
           <div class='movie-poster-item'>
             <div class='position-relative movie-poster-container'>
             <%= link_to '', movie_path(movie.id), class: 'movie-link' %>
@@ -29,14 +46,14 @@
               <% end %>
             </div>
           </div>
-          <div class='movie-list-item-body d-none text-center p-3'>
-            <p class='font-weight-normal fs-140 mb-0'>
+          <div class='movie-list-item-body text-center'>
+            <p class='font-weight-normal fs-105 mb-0 movie-title'>
               <%= movie.title %>
             </p>
-            <span class="dark-64 font-weight-light">
+            <span class="dark-64 font-weight-light fs-094 movie-release-date">
               <%= movie.release_date.to_time.strftime("%B %e, %Y") %>
             </span>
-            <p class='font-weight-normal d-none dark-54 movie-overview line-clamp mt-3'>
+            <p class='font-weight-normal d-none dark-68 movie-overview line-clamp mt-3'>
               <%= movie.overview %>
             </p>
           </div>

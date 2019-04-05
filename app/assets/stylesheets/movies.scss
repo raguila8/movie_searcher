@@ -55,6 +55,9 @@ $loader-color-element: $gold-light1;
 $loader-color-background: $gold-light1;
 
 
+$grid-gutter-width: 20px;
+
+
 .dark-84 {
   color: rgba(0,0,0,0.84);
 }
@@ -63,6 +66,9 @@ $loader-color-background: $gold-light1;
   color: rgba(0,0,0,0.74);
 }
 
+.dark-68 {
+  color: rgba(0,0,0,0.68);
+}
 
 .dark-64 {
   color: rgba(0,0,0,0.64);
@@ -435,6 +441,18 @@ body {
   opacity: 0;
 }
 
+.fs-088 {
+  font-size: 0.88rem;
+}
+
+.fs-094 {
+  font-size: 0.94rem;
+}
+
+
+.fs-100 {
+  font-size: 1.05rem;
+}
 
 .fs-105 {
   font-size: 1.05rem;
@@ -596,6 +614,80 @@ a {
   height: 100%;
 }
 
+.flex-basis-60px {
+  flex-basis: 60px;
+}
+
+.flex-basis-50 {
+  flex-basis: 50%;
+}
+
+.flex-basis-60 {
+  flex-basis: 60%;
+}
+
+.flex-basis-66 {
+  flex-basis: 66%;
+}
+
+
+.flex-basis-150px {
+  flex-basis: 150px;
+}
+
+.flex-basis-70px {
+  flex-basis: 70px;
+}
+
+.flex-basis-250px {
+  flex-basis: 250px;
+}
+
+.min-width-150px {
+  min-width: 150px;
+}
+
+.width-200px {
+  width: 200px;
+}
+
+.col-xxl-2 {
+  position: relative;
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.col-xl-2half {
+  position: relative;
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+@media (min-width: 1200px) {
+  .col-xl-2half {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+
+
+@media (min-width: 1500px) {
+  .col-xxl-2 {
+    flex: 0 0 16.66667%;
+    max-width: 16.66667%;
+  }
+
+  .col-xxl-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+}
+
+
+
 /* --------------------------------------------------------------------
  Borders
  -------------------------------------------------------------------------*/
@@ -666,7 +758,6 @@ select.form-control {
   z-index: 999;
 }
 .overlay-content {
-  text-align: center;
   padding: 75px 30px 60px;
   position: fixed;
   top: 0;
@@ -823,6 +914,7 @@ select.form-control {
   border: 1px solid transparent;
   border-color: $dark1;
   cursor: pointer;
+  font-size: 0.88rem;
 }
 
 .select-items div {
@@ -837,6 +929,9 @@ select.form-control {
   left: 0;
   right: 0;
   z-index: 99;
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
 /* Hide the items when the select box is closed: */
@@ -1608,8 +1703,8 @@ body[data-page="show"] {
     }
 
     svg {
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       fill: $dark54;
     }
 
@@ -1633,8 +1728,8 @@ body[data-page="show"] {
   }
 
   .movies-filter {
-    min-height: 114px;
-    border: 1px solid rgba(0,0,0,0.1);
+    //min-height: 114px;
+    //border: 1px solid rgba(0,0,0,0.1);
   }
 
   .grid-layout-toggles {

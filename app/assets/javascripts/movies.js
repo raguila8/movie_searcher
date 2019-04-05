@@ -1,5 +1,6 @@
 $(document).on('turbolinks:load', function() {
   $(window).unbind('scroll');
+  initInfiniteScroll();
 
   if ($('body').data('page') == 'home') {
     initTransparentNavbar();
@@ -7,8 +8,12 @@ $(document).on('turbolinks:load', function() {
     //initYTAPI();
   }
 
-  if ($('.custom-select1').length > 0) {
+  if ($('.custom-select1').length > 0 && $('.select-items').length == 0) {
     initCustomSelect();
+  }
+
+  if ($('body').data('page') == "discover" || $('body').data('page') == "genres#show") {
+    //initInfiniteScroll();
   }
 
   searchOnInput();
@@ -108,9 +113,16 @@ $(document).on('turbolinks:load', function() {
         $otherOption.find('svg.checked-radio').addClass('d-none');
 
         let $sorter = $c.prev('.custom-select1');
-        let sortBy = $sorter.data('sort');
-        $sorter.attr('data-sort', sortBy.substring(0, sortBy.lastIndexOf(".") + 1) + newOrder);
-        sortMovies($sorter.attr('data-sort'));
+        console.log("sort-attr:  " + $sorter.attr('data-sort'));
+        console.log("sort-data:  " + $sorter.data('sort'));
+
+        let sortBy = $sorter.attr('data-sort');
+        let newSort = sortBy + "." + newOrder;
+        //let newSort = sortBy.substring(0, sortBy.lastIndexOf(".") + 1) + newOrder;
+        //$sorter.attr('data-sort', newSort).data('sort', newSort);
+        //sortMovies($sorter.attr('data-sort'));
+        sortMovies(newSort);
+        console.log("sort: " + newSort);
       }
     });
   }
@@ -219,26 +231,27 @@ function initShowVideos() {
 function changeGridLayout(newGrid) {
   let colClasses = "";
   switch(newGrid) {
-    case 1:
+    case "full-width-overview":
       changeToOneColumnGrid();
-      colClasses =  "col-md-12 row";
+      colClasses =  "col-lg-12 row";
       break;
-    case 2:
+    case "poster-with-overview":
       changeToTwoColumnGrid();
-      colClasses =  "col-md-6 row";
+      colClasses =  "col-xxl-3 col-lg-4 col-md-6 row";
       break;
-    case 3:
+    case "backdrop-compact":
       changeToThreeColumnGrid();
-      colClasses =  "col-md-4";
+      colClasses =  "col-xxl-2 col-xl-2half col-lg-3 col-md-4 col-sm-6";
+      console.log('here');
       break;
-    case 4:
+    case "poster-compact":
       changeToFourColumnGrid()
-      colClasses = "col-md-3";
+      colClasses = "col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6";
     break;
   }
 
-  $(".movie-list-item[class*='col-md-']").removeClass(function(index, css) {
-    return (css.match (/(^|\s)col-md-\S+/g) || []).join(' ');
+  $(".movie-list-item[class*='col-']").removeClass(function(index, css) {
+    return (css.match (/(^|\s)col-\S+/g) || []).join(' ');
   }).addClass(colClasses);
 }
 
@@ -250,28 +263,33 @@ function changeToThreeColumnGrid() {
     let $poster = $(this).find("img[data-image-type='poster']");
     let $backdrop = $(this).find("img[data-image-type='backdrop']");
 
-    $poster.addClass('d-none');
-    $backdrop.addClass('d-block');
-    $(this).find('.movie-list-item-body').addClass('d-block text-center').removeClass('col-md-7 col-md-4 order-first');
-    $(this).find('.movie-poster-item').removeClass('col-md-5 col-md-4 order-last');
-    $(this).find('.movie-list-item-body .movie-overview').removeClass('d-block d-webkit-box');
+    $poster.addClass('d-none').removeClass('d-block');
+    $backdrop.addClass('d-block').removeClass('d-none');
+    $(this).find('.movie-list-item-body').addClass('d-block text-center').removeClass('col-md-7 col-md-4 col-md-8 order-first pt-3 p-1');
+    $(this).find('.movie-poster-item').removeClass('col-md-5 col-md-4 col-md-3 order-last');
+    $(this).find('.movie-list-item-body .movie-overview').removeClass('d-block d-webkit-box').addClass('d-none');
+    $(this).find('.movie-list-item-body .movie-title').addClass('fs-105').removeClass('fs-140 fs-130');
+    $(this).find('.movie-list-item-body .movie-release-date').addClass('fs-094').removeClass('fs-105 fs-100');
   });
   $('.movie-list-item').fadeTo('slow', 1);
 }
 
 function changeToFourColumnGrid() {
-  $('.movie-list-item').removeClass('mb-4 row').find('.movie-meta').show();
+  $('.movie-list-item').removeClass('row').addClass('mb-4').find('.movie-meta').show();
   $('.movie-list-item').each(function() {
     $(this).fadeTo('slow', 0);
     let $backdrop = $(this).find("img[data-image-type='backdrop']");
     let $poster = $(this).find("img[data-image-type='poster']");
 
-    $backdrop.removeClass('d-block');
-    $poster.removeClass('d-none');
+    $backdrop.removeClass('d-block').addClass('d-none');
+    $poster.removeClass('d-none').addClass('d-block');
     //$(this).find("img[data-image-type='poster']").addClass('d-block');
-    $(this).find('.movie-list-item-body').removeClass('d-block');
-    $(this).find('.movie-list-item-body .movie-overview').removeClass('d-block d-webkit-box');
-    $(this).find('.movie-poster-item').removeClass('col-md-5 col-md-4 order-last');
+    $(this).find('.movie-list-item-body').addClass('d-block text-center').removeClass('col-md-8 col-md-7 pt-3 p-1');
+    $(this).find('.movie-list-item-body .movie-overview').removeClass('d-block d-webkit-box').addClass('d-none');
+    $(this).find('.movie-poster-item').removeClass('col-md-5 col-md-4 col-md-3 order-last');
+    $(this).find('.movie-list-item-body .movie-title').addClass('fs-105').removeClass('fs-140 fs-130');
+    $(this).find('.movie-list-item-body .movie-release-date').addClass('fs-094').removeClass('fs-105 fs-100');
+
   });
   $('.movie-list-item').fadeTo('slow', 1);
 }
@@ -283,12 +301,15 @@ function changeToTwoColumnGrid() {
     let $backdrop = $(this).find("img[data-image-type='backdrop']");
     let $poster = $(this).find("img[data-image-type='poster']");
 
-    $backdrop.removeClass('d-block');
-    $poster.removeClass('d-none');
+    $backdrop.removeClass('d-block').addClass('d-none');
+    $poster.removeClass('d-none').addClass('d-block');
     //$(this).find("img[data-image-type='poster']").addClass('d-block');
-    $(this).find('.movie-list-item-body').addClass('d-block col-md-7 p-1').removeClass('text-center col-md-8 order-first');
+    $(this).find('.movie-list-item-body').addClass('d-block col-md-7 p-1 pt-3').removeClass('text-center col-md-8 order-first');
     $(this).find('.movie-poster-item').addClass('col-md-5').removeClass('col-md-4 order-last');
     $(this).find('.movie-list-item-body .movie-overview').addClass('d-block d-webkit-box').removeClass('line-clamp-3');
+    $(this).find('.movie-list-item-body .movie-title').addClass('fs-130').removeClass('fs-105 fs-140');
+    $(this).find('.movie-list-item-body .movie-release-date').addClass('fs-100').removeClass('fs-094 fs-105');
+
   });
   $('.movie-list-item').fadeTo('slow', 1);
 }
@@ -300,14 +321,45 @@ function changeToOneColumnGrid() {
     let $backdrop = $(this).find("img[data-image-type='backdrop']");
     let $poster = $(this).find("img[data-image-type='poster']");
 
-    $backdrop.addClass('d-block');
-    $poster.addClass('d-none');
+    $backdrop.addClass('d-block').removeClass('d-none');
+    $poster.addClass('d-none').removeClass('d-block');
     //$(this).find("img[data-image-type='poster']").addClass('d-block');
-    $(this).find('.movie-list-item-body').addClass('d-block col-md-8 order-first p-1').removeClass('text-center col-md-7');
-    $(this).find('.movie-poster-item').addClass('col-md-4 order-last').removeClass('col-md-5');
+    $(this).find('.movie-list-item-body').addClass('d-block col-md-8 pt-3').removeClass('text-center col-md-7');
+    $(this).find('.movie-poster-item').addClass('col-md-3').removeClass('col-md-5');
     $(this).find('.movie-list-item-body .movie-overview').addClass('d-block d-webkit-box line-clamp-3');
+    $(this).find('.movie-list-item-body .movie-title').addClass('fs-140').removeClass('fs-105 fs-130');
+    $(this).find('.movie-list-item-body .movie-release-date').addClass('fs-105').removeClass('fs-094 fs-100');
   });
   $('.movie-list-item').fadeTo('slow', 1);
+}
+
+function renderMovieHTML(movie, classes) {
+  return  `
+  <div class="movie-list-item ${classes.movieListItem}">
+    <div class="movie-poster-item ${classes.moviePosterItem}">
+      <div class="position-relative movie-poster-container">
+        <a href="/movies/${movie['id']}" class="movie-link"></a>
+        <img src="https://image.tmdb.org/t/p/original${movie['backdrop_path']}" class="img-fluid ${classes.backdrop}" data-image-type="backdrop" onerror="this.onerror=null; this.src='/assets/backdrop_default.jpg'">
+        <img src="https://image.tmdb.org/t/p/w500${movie['poster_path']}" class="img-fluid ${classes.poster}" data-image-type="poster" onerror="this.onerror=null; this.src='/assets/movie1-02.jpg'">
+        <div class="movie-meta ${classes.movieMeta}">
+          <h5 class="line-clamp line-clamp-3" >${movie['title']}</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="movie-list-item-body ${classes.movieListItemBody}">
+      <p class="font-weight-normal mb-0 ${classes.movieTitle}">
+        ${ movie.title }
+      </p>
+      <span class="dark-64 font-weight-light ${classes.movieReleaseDate}">
+        ${ new Date(movie['release_date']).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' }) }
+      </span>
+      <p class="font-weight-normal dark-68 movie-overview line-clamp mt-3 ${classes.movieOverview}">
+        ${ movie['overview'] }
+      </p>
+    </div>
+  </div>
+  `;
 }
 
 /* ----------------------------------------------------------------------
@@ -337,6 +389,8 @@ function initCustomSelect() {
         c.setAttribute("data-sort-option", selElmnt.options[j].getAttribute("data-sort-option"));
       } else if (selElmnt.classList.contains("year-filter-select")) {
         c.setAttribute("data-filter-option", selElmnt.options[j].getAttribute("data-filter-option"));
+      } else if (selElmnt.classList.contains("layout-toggles-select")) {
+        c.setAttribute("data-layout-option", selElmnt.options[j].getAttribute("data-layout-option"));
       }
       if ( j == 0) {
         c.setAttribute('class', 'same-as-selected');
@@ -360,12 +414,24 @@ function initCustomSelect() {
             if (customSelect.hasAttribute('data-sort') && customSelect.getAttribute('data-sort') !== this.getAttribute('data-sort-option')) {
               var sortBy = this.getAttribute("data-sort-option");
               customSelect.setAttribute("data-sort", sortBy);
-              sortMovies(sortBy);
+              //customSelect.dataset.sort = sortBy;
+              console.log("here:  " + customSelect.dataset.sort);
+              let order = $('.sort-options .sort-order').data('order');
+              console.log("sort: " + sortBy + "." + order);
+              sortMovies(sortBy + "." + order);
             } else if (customSelect.hasAttribute('data-filter') && customSelect.getAttribute('data-filter') !== this.getAttribute('data-filter-option')) {
               let myData = $('.movies-filter').data('filters');
               myData["primary_release_year"] = this.getAttribute('data-filter-option');
               $('.movies-filter').data('filters', myData).attr('data-filters', myData);
-              sortMovies($('.sort-options .custom-select1').data('sort'));
+              let sort = $('.sort-options .custom-select1').attr('data-sort');
+              let order = $('.sort-options .sort-order').attr('data-order');
+              //sortMovies($('.sort-options .custom-select1').data('sort'));
+              sortMovies(sort + "." + order);
+            } else if (customSelect.hasAttribute('data-view') && customSelect.getAttribute('data-view') !== this.getAttribute('data-layout-option')) {
+              let layout = this.getAttribute("data-layout-option");
+              customSelect.setAttribute("data-view", layout);
+              //customSelect.data.view = layout;
+              changeGridLayout(layout);
             }
             break;
           }
@@ -418,7 +484,6 @@ function sortMovies(sortBy) {
       filtersString = filtersString + "&" + property + "=" + filters[property];
     }
   }
-  console.log(filtersString);
 
   var settings = {
     "async": true,
@@ -431,21 +496,33 @@ function sortMovies(sortBy) {
 
   $.ajax(settings).done(function (response) {
     $('#movies-row').empty().hide();
+    let currentGrid = $('.layout-toggles .custom-select1').data('view');
+    let classes = getMovieItemClasses(currentGrid);
     for (var i = 0; i < response.results.length; i++) {
-      $("#movies-row").append(renderMovieHTML(response.results[i]));
+      $("#movies-row").append(renderMovieHTML(response.results[i], classes));
     }
     
-    $currentGrid = $('.grid-layout-toggles span.active');
-    if ($currentGrid.data('col') != 4 ) {
-      changeGridLayout($currentGrid.data('col'));
-    }
     $('#movies-row').show();
   });
 }
 
+function getMovieItemClasses(grid) {
+  switch(grid) {
+    case "full-width-overview":
+      return { movieListItem: "col-lg-12 row mb-4", moviePosterItem: "col-md-3", backdrop: "d-block", poster: "d-none", movieMeta: "d-none", movieListItemBody: "d-block col-md-8 pt-3", movieTitle: "fs-140", movieReleaseDate: "fs-105", movieOverview: "d-block d-webkit-box line-clamp-3" };
+    case "poster-with-overview":
+      return { movieListItem: "col-xxl-3 col-lg-4 col-md-6 row mb-4", moviePosterItem: "col-md-5", backdrop: "d-none", poster: "d-block", movieMeta: "d-none", movieListItemBody: "d-block col-md-7 p-1 pt-2", movieTitle: "fs-130", movieReleaseDate: "fs-100", movieOverview: "d-block d-webkit-box" };
+    case "backdrop-compact":
+      return { movieListItem: "col-xxl-2 col-xl-2half col-lg-3 col-md-4 col-sm-6 mb-4", moviePosterItem: "", backdrop: "d-block", poster: "d-none", movieMeta: "d-none", movieListItemBody: "d-block text-center", movieTitle: "fs-105", movieReleaseDate: "fs-094", movieOverview: "d-none" };
+    case "poster-compact":
+      return { movieListItem: "col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6 mb-4", moviePosterItem: "", backdrop: "d-none", poster: "d-block", movieMeta: "d-block", movieListItemBody: "d-block text-center", movieTitle: "fs-105", movieReleaseDate: "fs-094", movieOverview: "d-none" };
+  }
+}
+
+/*
 function renderMovieHTML(movie) {
   return  `
-  <div class="col-md-3 movie-list-item">
+  <div class="col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6 movie-list-item">
     <div class="movie-poster-item">
       <div class="position-relative movie-poster-container">
         <a href="/movies/${movie['id']}" class="movie-link"></a>
@@ -471,6 +548,8 @@ function renderMovieHTML(movie) {
   </div>
   `;
 }
+*/
+
 
 /* --------------------------------------------------------------------
     Search overlay
@@ -536,10 +615,8 @@ function searchOnInput() {
                 $content.find('#movies-searched-tab').data('loaded', false).attr('data-loaded', false);
               }
             }
-
             $content.data('searched', true);
           });
-
         changeTimer = false;
       },300);
     }
@@ -559,10 +636,10 @@ function searchTabsHTML() {
 
     <div class="tab-content" id="searchedTabContent">
       <div class="tab-pane fade show active pt-5" id="movies-searched" role="tabpanel" aria-labelledby="movies-tab">
-        <div class='row' id='searched-movies-list'></div>
+        <div class='row' id='searched-movies-list' data-page=1></div>
       </div>
       <div class="tab-pane fade pt-5" id="people-searched" role="tabpanel" aria-labelledby="people-tab">
-        <div class='row' id='searched-people-list'></div>
+        <div class='row' id='searched-people-list' data-page=1></div>
       </div>
     </div>
   `;
@@ -620,10 +697,10 @@ function searchedMovieHTML(movie) {
           ${ movie.title }
         </p>
       </a>
-      <span class="dark-64 font-weight-light">
+      <span class="dark-64 font-weight-light fs-094">
         ${ new Date(movie['release_date']).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' }) }
       </span>
-      <p class="font-weight-normal dark-54 movie-overview line-clamp mt-3">
+      <p class="font-weight-normal dark-68 movie-overview line-clamp mt-3">
         ${ movie['overview'] }
       </p>
     </div>
@@ -738,4 +815,165 @@ function toggleSidenav() {
     document.getElementById("main").style.marginLeft = "0";
 
   }
+}
+
+/* --------------------------------------------------------------------
+  Infinite Scroll
+ --------------------------------------------------------------------- */
+
+function initInfiniteScroll() {
+  if ($('body').data('page') == "discover" || $('body').data('page') == "genres#show") {
+    let changeTimer = false;
+    $(window).scroll(function(){
+      if ($(window).scrollTop() > ($(document).height() - ($(window).height() + 300))){
+        if(changeTimer !== false) clearTimeout(changeTimer);
+        changeTimer = setTimeout(function(){
+          let url = prepareURLForPagination();
+          console.log(url);
+          let $list = $('.infinite-scroll');
+
+          var settings = {
+           "async": true,
+            "crossDomain": true,
+            "url": url,
+            "method": "GET",
+            "headers": {},
+            "data": "{}",
+            "beforeSend": function() {
+            }
+          };
+
+          $.ajax(settings).done(function (response) {
+            let page = parseInt($list.data('page')) + 1
+            $list.append(movieListHTML(response.results));
+            $list.data('page', page).attr('data-page', page);
+          });
+          changeTimer = false;
+        }, 300);
+      }
+    });
+  }
+
+  let secondChangeTimer = false;
+  $content = $(".search-content");
+  $content.scroll(function(){
+    if ($content.scrollTop() > ($content[0].scrollHeight - ($content.height() + 300))){
+      if(secondChangeTimer !== false) clearTimeout(secondChangeTimer);
+      secondChangeTimer = setTimeout(function(){
+        var $list;
+        var resource;
+        let query = $('#search').val();
+        if ($content.find('#movies-searched-tab').hasClass('active')) {
+          resource = "movie";
+          $list = $("#searched-movies-list");
+        } else {
+          resource = "person";
+          $list = $("#searched-people-list");
+        }
+
+        let pageToLoad = parseInt($list.data('page')) + 1;
+        let url = "https://api.themoviedb.org/3/search/" + resource + "?include_adult=false&page=1&query=" + query + "&language=en-US&api_key=028d977d1d63154051352db890f31c62" + "&page=" + pageToLoad;
+        console.log(url);
+        var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": url,
+          "method": "GET",
+          "headers": {},
+          "data": "{}",
+          "beforeSend": function() {
+          }
+        };
+
+        $.ajax(settings).done(function (response) {
+          let classes = getMovieItemClasses("full-width-overview");
+          let html = "";
+          if (resource == "movie") {
+            for (var i = 0; i < response.results.length; i++) {
+              html += renderMovieHTML(response.results[i], classes);
+            }
+          } else if (resource == "person") {
+            for (var i = 0; i < response.results.length; i++) {
+              html += searchedPersonHTML(response.results[i]);
+            }
+          }
+          $list.append(html);
+          $list.data('page', pageToLoad).attr('data-page', pageToLoad);
+        });
+        secondChangeTimer = false;
+      }, 300);
+    }
+  });
+}
+
+function getSearchPaginationURL($content) {
+  let resource = "";
+  if ($content.find('#movies-searched-tab').hasClass('active')) {
+    resource = "movie";
+  } else {
+    resource = "person";
+  }
+
+  let query = $('#search').val();
+  return "https://api.themoviedb.org/3/search/" + resource + "?include_adult=false&page=1&query=" + query + "&language=en-US&api_key=028d977d1d63154051352db890f31c62";
+
+}
+
+function prepareURLForPagination() {
+  let $list = $('.infinite-scroll');
+  let list = $list.data('list');
+  let pageToLoad = parseInt($list.data('page')) + 1;
+  let url = "";
+  
+  if (list == "genre") {
+    let genre_id = $list.data('genre-id');
+    let sort = $(".sort-options .custom-select1").attr('data-sort');
+    let order = $(".sort-options .sort-order").attr('data-order');
+    let sort_by = sort + "." + order;
+    var filters = $('.movies-filter').data('filters');
+    var filtersString = "";
+    for (var property in filters) {
+      if (filters.hasOwnProperty(property)) {
+        filtersString = filtersString + "&" + property + "=" + filters[property];
+      }
+    }
+    console.log(filtersString);
+    console.log(sort);
+    console.log(pageToLoad);
+    return url = "https://api.themoviedb.org/3/discover/movie?api_key=028d977d1d63154051352db890f31c62&language=en-US&sort_by=" + sort_by + "&include_adult=false&include_video=false&page=" + pageToLoad + "&with_genres=" + genre_id + filtersString;
+  } else if (list == "collection") {
+    let collection = $list.data('collection');
+    if (collection == "trending") {
+      collection = "trending/movie/week";
+      return "https://api.themoviedb.org/3/" + collection + "?api_key=028d977d1d63154051352db890f31c62&page=" + pageToLoad + "";
+    }
+    return "https://api.themoviedb.org/3/movie/" + collection + "?api_key=028d977d1d63154051352db890f31c62&language=en-US&page=" + pageToLoad + "";
+  }
+}
+
+function movieListHTML(movies) {
+  let currentGrid = $('.layout-toggles .custom-select1').attr('data-view');
+  let classes = getMovieItemClasses(currentGrid);
+
+  var html = "";
+  for (var i = 0; i < movies.length; i++) {
+    html += renderMovieHTML(movies[i], classes);
+  }
+  return html;
+}
+
+function movieItemHTML(movie) {
+  return `
+    <div class='col-lg-2 col-sm-3 col-4 movie-list-item'>
+      <div class='movie-poster-item'>
+        <div class='position-relative movie-poster-container'>
+          <a href="/movies/${movie.id}" class= 'movie-link'></a>
+	  <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class='img-fluid' data-image-type='poster' onerror="this.onerror=null; this.src='/assets/movie1-02.jpg'">
+          <div class='movie-meta'>
+            <h5 class='line-clamp line-clamp-3' >${movie.title}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    `;
 }

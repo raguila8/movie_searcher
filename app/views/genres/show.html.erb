@@ -1,27 +1,27 @@
-<div class='container'>
-  <section class='genre-header mb-9'>
-    <h1 class='display-4 mb-5 fancy-display'>
+<div class='container-fluid max-width-94'>
+  <section class='genre-header mb-6'>
+    <h1 class='display-4 mb-4 fancy-display'>
       <%= @genre.name %>
     </h1>
   </section>
 
   <section class='movies-list'>
-    <div class='row mb-4 justify-content-start'>
-      <div class='col-lg-4 col-md-5 pt-2 pb-2'>
-        <div class='sort-options p-3 border-light-1'>
-          <p class='mb-1 pb-1 pl-8 pr-8 text-center font-weight-light dark-84'>
+    <div class='row mb-4 justify-content-start align-items-center'>
+      <div class='pt-2 pb-2 flex-basis-250px mr-2'>
+        <div class='sort-options d-flex align-items-center'>
+          <span class='pl-8 pr-8 text-center font-weight-normal dark-54 flex-basis-60px'>
             Sort
-          </p>
-          <div class='d-flex align-items-center'>
-            <div class='custom-select1 d-inline-block width-84' data-sort="popularity.desc">
+          </span>
+          <div class='d-flex align-items-center flex-basis-250px'>
+            <div class='custom-select1 d-inline-block width-200px' data-sort="popularity">
               <select class="movie-sorter-select">
-                <option data-sort-option="popularity.desc" value="0" selected>Popularity</option>
-                <option data-sort-option="release_date.desc" value="1">Release date</option>
-                <option data-sort-option="revenue.desc" value="2">Revenue</option>
-                <option data-sort-option="original_title.desc" value="3">Title</option>
+                <option data-sort-option="popularity" value="0" selected>Popularity</option>
+                <option data-sort-option="release_date" value="1">Release date</option>
+                <option data-sort-option="revenue" value="2">Revenue</option>
+                <option data-sort-option="original_title" value="3">Title</option>
               </select>
             </div>
-            <div class='sort-order d-inline-block text-center width-16' data-order='desc'>
+            <div class='sort-order d-inline-block text-center flex-basis-70px' data-order='desc'>
               <div class='sort-order-option' data-order-option='asc'>
                 <span>
                   <%= inline_svg 'baseline-radio_button_checked.svg', class: 'd-none checked-radio'%>
@@ -44,11 +44,11 @@
           </div>
         </div>
       </div>
-      <div class='col-lg-3 col-md-4 pt-2 pb-2'>
-        <div class='movies-filter p-3' data-filters='{"with_genres": "<%=@genre.id%>"}'>
-          <div class='year-filter'>
-            <p class='mb-1 pb-1 text-center font-weight-light dark-84'>Year</p>
-            <div class='custom-select1 d-inline-block width-100' data-filter="none">
+      <div class='flex-basis-250px mr-2 pt-2 pb-2'>
+        <div class='movies-filter' data-filters='{"with_genres": "<%=@genre.id%>"}'>
+          <div class='year-filter d-flex align-items-center'>
+            <span class='pl-8 pr-8 text-center font-weight-normal dark-54 flex-basis-60px'>Year</span>
+            <div class='custom-select1 d-inline-block width-200px' data-filter="none">
               <select class="year-filter-select">
                 <option data-filter-option="any" value="0" selected>Any</option>
                 <% 2019.downto(1900) do |year| %>
@@ -59,30 +59,49 @@
           </div>
         </div>
       </div>
+      <div class='flex-basis-250px mr-2 pt-2 pb-2'>
+        <div class='layout-toggles d-flex align-items-center'>
+          <span class='pl-8 pr-8 text-center font-weight-normal dark-54 flex-basis-60px'>View</span>
+          <div class='custom-select1 d-inline-block width-200px' data-view="poster-compact">
+            <select class="layout-toggles-select">
+              <option data-layout-option="poster-compact" value="0" selected>Poster compact</option>
+              <option data-layout-option="backdrop-compact" value="1">Backdrop compact</option>
+              <option data-layout-option="poster-with-overview" value="2">Compact overview</option>
+              <option data-layout-option="full-width-overview" value="3">Full width overview</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--
+
       <div class='col-md-3 text-right align-self-center offset-lg-2 pt-2 pb-2'>
         <div class='grid-layout-toggles p-3'>
           <p class='mb-1 pb-1 border-bottom-light-1 text-center font-weight-light dark-84'>View</p>
           <span data-col=1>
-            <%= inline_svg '1-column-grid.svg'%>
+            <%#= inline_svg '1-column-grid.svg'%>
           </span>
 
           <span data-col=2>
-            <%= inline_svg '1-column-grid.svg', class: 'rotate-90'%>
+            <%#= inline_svg '1-column-grid.svg', class: 'rotate-90'%>
           </span>
 
           <span data-col=3>
-            <%= inline_svg '3-column-grid.svg'%>
+            <%#= inline_svg '3-column-grid.svg'%>
           </span>
 
           <span class='active' data-col=4>
-            <%= inline_svg '4-column-grid.svg'%>
+            <%#= inline_svg '4-column-grid.svg'%>
           </span>
         </div>
       </div>
     </div>
-    <div class='row' id='movies-row'>
+-->
+
+    <div class='row infinite-scroll' id='movies-row' data-page=1 data-list="genre" data-genre-id=<%=@genre.id%>>
       <% @movies.each do |movie| %>
-        <div class='col-md-3 movie-list-item'>
+        <div class='col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6 mb-4 movie-list-item'>
           <div class='movie-poster-item'>
             <div class='position-relative movie-poster-container'>
             <%= link_to '', movie_path(movie.id), class: 'movie-link' %>
@@ -102,14 +121,14 @@
               <% end %>
             </div>
           </div>
-          <div class='movie-list-item-body d-none text-center p-3'>
-            <p class='font-weight-normal fs-140 mb-0'>
+          <div class='movie-list-item-body text-center'>
+            <p class='font-weight-normal fs-105 mb-0 movie-title'>
               <%= movie.title %>
             </p>
-            <span class="dark-64 font-weight-light">
+            <span class="dark-68 font-weight-light fs-094 movie-release-date">
               <%= movie.release_date.to_time.strftime("%B %e, %Y") %>
             </span>
-            <p class='font-weight-normal d-none dark-54 movie-overview line-clamp mt-3'>
+            <p class='font-weight-normal d-none dark-64 movie-overview line-clamp mt-3'>
               <%= movie.overview %>
             </p>
           </div>
@@ -118,5 +137,3 @@
     </div>
   </section>
 </div>
-
-<%= render '/layouts/search_overlay' %>
