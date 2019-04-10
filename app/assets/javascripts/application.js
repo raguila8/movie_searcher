@@ -17,4 +17,5 @@
 //= require popper
 //= require bootstrap-sprockets
 //= require jquery.slick
+//= require lightbox.js
 //= require_tree .

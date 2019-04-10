@@ -1,15 +1,15 @@
 <%= link_to person_path(person.id) do %>
 <div class='credits-carousel-item text-center'>
-	<div class='carousel-profile-item mb-2'>
+  <div class='carousel-profile-item mb-2'>
     <div class='position-relative credit-profile-container'>
-	    <img src="<%= configurations_base_url %>h632<%=person.profile_path%>" class='img-fluid'>
-	  </div>
-	</div>
-  <p class='font-weight-normal fs-130 mb-1'><%= person.name %></p>
+      <img src="<%= configurations_base_url %>h632<%=person.profile_path%>" class='img-fluid'>
+    </div>
+  </div>
+  <p class='font-weight-normal fs-130 fs-lg-115 fs-md-105 mb-1'><%= person.name %></p>
   <% if person.class.method_defined? :character %>
-    <span class='dark-64 font-weight-light'><%= person.character %></span>
+    <span class='dark-64 font-weight-light fs-lg-100 fs-md-094'><%= person.character %></span>
   <% else %>
-    <span class='dark-64 font-weight-light'><%= person.job %></span>
+    <span class='dark-64 font-weight-light fs-lg-100 fs-md-094'><%= person.job %></span>
   <% end %>
 </div>
 <% end %>

@@ -30,22 +30,61 @@ $(document).on('turbolinks:load', function() {
 
 
   if ($('body').data('page') == 'show') {
-    $('.cast-carousel, .cast-credits-carousel, .crew-credits-carousel').slick({
-      infinite: true,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      variableWidth: true,
-      centerMode: true,
+    $('.cast-carousel, .cast-credits-carousel, .crew-carousel').on('init', function(slick) {
+      let height = $($(this).find(".credit-profile-container")[0]).css('padding-top');
+      $(this).find('.slick-arrow').css('height', height);
+    });
+
+
+    $('.cast-carousel, .cast-credits-carousel, .crew-carousel').slick({
+      infinite: false,
+      slidesToShow: 7,
+      slidesToScroll: 7,
       responsive: [
         {
-          breakpoint: 992,
+          breakpoint: 1400,
           settings: {
-            slidesToShow: 2
+            slidesToShow: 6,
+            slidesToScroll: 6
+          }
+        },
+
+        {
+          breakpoint: 1092,
+          settings: {
+            slidesToShow: 5,
+            slidesToScroll: 5
+
+          }
+        },
+
+        {
+          breakpoint: 920,
+          settings: {
+            slidesToShow: 4,
+            slidesToScroll: 4
+          }
+        },
+
+        {
+          breakpoint: 700,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3
+          }
+        },
+
+        {
+          breakpoint: 576,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
           }
         }
       ]
     });
 
+/* 
     $('.crew-carousel').slick({
       infinite: true,
       slidesToShow: 5,
@@ -62,11 +101,11 @@ $(document).on('turbolinks:load', function() {
         }
       ]
     });
+*/
 
     $('.video-carousel').slick({
       slidesToShow: 3,
       slidesToScroll: 1,
-      dots: true,
       centerMode: true,
       focusOnSelect: true,
       responsive: [
@@ -77,6 +116,27 @@ $(document).on('turbolinks:load', function() {
           }
         }
       ]
+    });
+
+    let resizeChangeTimer = false;
+    $(window).on('resize', function(){
+      if(resizeChangeTimer !== false) clearTimeout(resizeChangeTimer);
+      resizeChangeTimer = setTimeout(function(){
+        let $slick = $('.cast-carousel, .cast-credits-carousel, .crew-carousel');
+        let height = $($slick.find(".credit-profile-container")[0]).css('padding-top');
+        console.log(height);
+        $slick.find('.slick-arrow').css('height', height);
+        resizeChangeTimer = false;
+      }, 300);
+    });
+
+    $(".arrow-link[data-trigger='tab']").on('click', function (e) {
+      e.preventDefault();
+      let target = $(this).attr('data-target');
+      $target = $("#movieTab a[id='" + target + "']");
+      if (!$target.hasClass('active')) {
+        $target.tab('show'); // Select tab by name
+      }
     });
 
     $('#all-tab').on('click', function() {
@@ -242,7 +302,6 @@ function changeGridLayout(newGrid) {
     case "backdrop-compact":
       changeToThreeColumnGrid();
       colClasses =  "col-xxl-2 col-xl-2half col-lg-3 col-md-4 col-sm-6";
-      console.log('here');
       break;
     case "poster-compact":
       changeToFourColumnGrid()

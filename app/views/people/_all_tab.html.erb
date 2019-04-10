@@ -1,12 +1,29 @@
 <% if person.acting_credits.any? %>
 <!-- Acting credits section -->
-<section class='show-section cast-credits-section mb-9'>
-  <h1 class='display-5 mb-5'>Cast credits</h1>
+<section class='show-section cast-credits-section container-fluid pb-6 pt-6 pl-lg-6 pr-lg-6'>
+  <h1 class='display-5 mb-5 text-center'>Cast credits</h1>
+  <div class='row align-items-center'>
+    <div class='col text-right justify-content-center align-self-end'>
+      <%= link_to "", class: 'btn btn-text font-weight-600 nav-link arrow-link', 
+                      data: { target: 'cast-credits-tab', trigger: 'tab'}  do %>
+        <svg>
+	  <g>
+	    <line y1="31.28" x2="227.62" y2="31.28"></line>
+	    <polyline points="222.62 25.78 228.12 31.28 222.62 36.78"></polyline>
+	    <circle cx="224.67" cy="30.94" r="30.5" transform="rotate(180 224.67 30.94) scale(1, -1) translate(0, -61)"></circle>
+          </g>
+        </svg>
+        <font>All casting credits</font>
+      <% end %>
+    </div>
+  </div>
+
+
   <div class='cast-credits-carousel slick-carousel'>
-    <% person.acting_credits.first(9).each do |credit| %>
-		  <% if not credit.poster_path.nil? %>
+    <% person.acting_credits.first(21).each do |credit| %>
+      <% if not credit.poster_path.nil? %>
         <%= render partial: '/people/credits_carousel_item', locals: { credit: credit } %>
-			<% end %>
+      <% end %>
     <% end %>
   </div>
 </section> <!--/ End acting credits section -->
@@ -14,13 +31,29 @@
 
 <% if person.crew_credits.any? %>
 <!-- Crew credits section -->
-<section class='show-section crew-credits-section mb-9'>
-  <h1 class='display-5 mb-5'>Crew credits</h1>
+<section class='show-section crew-credits-section container-fluid pb-6 pt-6 pl-lg-6 pr-lg-6'>
+  <h1 class='display-5 mb-5 text-center'>Crew credits</h1>
+  <div class='row align-items-center'>
+    <div class='col text-right justify-content-center align-self-end'>
+      <%= link_to "", class: 'btn btn-text font-weight-600 nav-link arrow-link', 
+                      data: { target: 'crew-credits-tab', trigger: 'tab'}  do %>
+        <svg>
+	  <g>
+	    <line y1="31.28" x2="227.62" y2="31.28"></line>
+	    <polyline points="222.62 25.78 228.12 31.28 222.62 36.78"></polyline>
+	    <circle cx="224.67" cy="30.94" r="30.5" transform="rotate(180 224.67 30.94) scale(1, -1) translate(0, -61)"></circle>
+          </g>
+        </svg>
+        <font>All crew credits</font>
+      <% end %>
+    </div>
+  </div>
+
   <div class='crew-carousel slick-carousel'>
-    <% person.crew_credits.first(9).each do |credit| %>
-		  <%# if not credit.poster_path.nil? %>
+    <% person.crew_credits.first(21).each do |credit| %>
+      <% if not credit.poster_path.nil? %>
         <%= render partial: '/people/credits_carousel_item', locals: { credit: credit } %>
-			<%# end %>
+      <% end %>
     <% end %>
   </div>
 </section> <!--/ End crew credits section -->
@@ -28,16 +61,45 @@
 
 <% if person.images.any? %>
 <!-- Images section -->
-<section class='show-section images-section mb-9'>
-  <h1 class='display-5 mb-5'>Images</h1>
-
-  <div class='card-columns'>
-    <% person.images.take(6).each do |image| %>
-    <div class='card'>
-      <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
+<section class='show-section images-section container-fluid images-section pb-6 pt-6 pl-lg-6 pr-lg-6'>
+  <h1 class='display-5 mb-5 text-center'>Images</h1>
+  <div class='row align-items-center'>
+    <div class='col text-right justify-content-center align-self-end'>
+      <%= link_to "", class: 'btn btn-text font-weight-600 nav-link arrow-link', 
+                      data: { target: 'images-tab', trigger: 'tab'}  do %>
+        <svg>
+	  <g>
+	    <line y1="31.28" x2="227.62" y2="31.28"></line>
+	    <polyline points="222.62 25.78 228.12 31.28 222.62 36.78"></polyline>
+	    <circle cx="224.67" cy="30.94" r="30.5" transform="rotate(180 224.67 30.94) scale(1, -1) translate(0, -61)"></circle>
+          </g>
+        </svg>
+        <font>View all images</font>
+      <% end %>
     </div>
-    <% end %>
   </div>
+
+  <% if person.images.length >= 4 %>
+    <div class='card-columns images-card-columns'>
+      <% person.images.take(8).each do |image| %>
+      <div class='card'>
+        <a href="<%= configurations_base_url %>original<%=image.file_path%>" data-lightbox= "images-all-tab">
+          <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
+        </a>
+      </div>
+      <% end %>
+    </div>
+    <% else %>
+      <div class='row'>
+        <% person.images.each do |image| %>
+        <div class='col text-center'>
+          <a href="<%= configurations_base_url %>original<%=image.file_path%>" data-lightbox= "images-all-tab">
+            <img class="img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
+          </a>
+        </div>
+        <% end %>
+      </div>
+    <% end %>
 </section> <!--/ End images section -->
 <% end %>
 

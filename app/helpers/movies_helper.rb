@@ -57,4 +57,17 @@ module MoviesHelper
       "#{ configurations_base_url }h632#{poster_path}" 
     end
   end
+
+  def image_preview_count(movie)
+    case movie.backdrops.length
+    when 0
+      8
+    when 1
+      8
+    when 2
+      9
+    else
+      10
+    end
+  end
 end

@@ -1,3 +1,4 @@
+<div class='container'>
 <ul class="nav nav-tabs" id="movieTab" role="tablist">
   <li class="nav-item">
     <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
@@ -8,64 +9,128 @@
   <li class="nav-item">
     <a class="nav-link" id="crew-tab" data-toggle="tab" href="#crew" role="tab" aria-controls="crew" aria-selected="false">Crew</a>
   </li>
+  <% if @movie.images.any? %>
   <li class="nav-item">
     <a class="nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab" aria-controls="images" aria-selected="false">Images</a>
   </li>
+  <% end %>
+  <% if @movie.videos.any? %>
   <li class="nav-item">
     <a class="nav-link" id="videos-tab" data-toggle="tab" href="#videos" role="tab" aria-controls="videos" aria-selected="false">Videos</a>
   </li>
+  <% end %>
 </ul>
+</div>
+
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active pt-5" id="all" role="tabpanel" aria-labelledby="all-tab">
+  <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
     <%= render partial: '/movies/all_tab', locals: { movie: @movie } %>
 	</div>
   <div class="tab-pane fade" id="cast" role="tabpanel" aria-labelledby="cast-tab">
-    <section class='show-section cast-section mb-9'>
-      <div class='card-columns card-columns-4'>
+    <div class='container-fluid pl-lg-6 pr-lg-6'>
+    <% if @movie.cast.any? %>
+      <span class='display-7 mb-3 fancy-display fancy-display-small'>Cast</span><span class='ml-3 dark-54'><%=pluralize(@movie.cast.length, "cast member")%></span>
+      <div class='row mt-4 mb-4'>
         <% @movie.cast.each do |cast_member| %>
-          <%= render partial: '/movies/person_tab_item', locals: { person: cast_member } %>
+          <div class='col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6 mb-5'>
+            <a href="<%= person_path(cast_member.id)%>">
+              <img class="card-img-top img-fluid" src="<%= configurations_base_url %>h632<%=cast_member.profile_path%>" onerror="this.onerror=null; this.src='/assets/default-profile-icon.jpg'">
+              <div class='text-center'>
+                <p class='font-weight-normal fs-130 fs-lg-115 fs-md-105 mb-1'>
+                  <%= cast_member.name %>
+                </p>
+                <span class='dark-64 font-weight-light fs-lg-100 fs-md-094'><%= cast_member.character %></span>
+              </div>
+            </a>
+          </div>
         <% end %>
       </div>
-    </section>
-  </div>
-	<div class="tab-pane fade" id="crew" role="tabpanel" aria-labelledby="crew-tab">
-    <section class='show-section crew-section mb-9'>
-      <div class='card-columns card-columns-4'>
-        <% @movie.crew.each do |crew_member| %>
-          <%= render partial: '/movies/person_tab_item', locals: { person: crew_member } %>
-        <% end %>
-      </div>
-    </section>
-  </div>
-  <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-    <div class='card-columns card-columns-4'>
-    <% @movie.images.each do |image| %>
-    <div class='card'>
-      <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
-    </div>
     <% end %>
+    </div>
   </div>
 
-  </div>
-	<div class="tab-pane fade pt-5" id="videos" role="tabpanel" aria-labelledby="videos-tab">
-    <div class='row'>
-      <% @movie.videos.each do |video| %>
-      <div class='col-sm-6 col-md-4 mb-4'>
-      <div class='card video-card video-toggle' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= video.key %>" data-target='#videoModal' >
-        <div class='position-relative video-card-img-container'>
-          <img class="card-img-top img-fluid" src="https://img.youtube.com/vi/<%=video.key%>/maxresdefault.jpg" data-holder-rendered="true">
-          <div class='video-btn transition-color-03'>
-            <span>
-              <%= inline_svg 'baseline-play_circle_filled'%>
-            </span>
+  <div class="tab-pane fade" id="crew" role="tabpanel" aria-labelledby="crew-tab">
+    <div class='container-fluid pl-lg-6 pr-lg-6'>
+    <% if @movie.crew.any? %>
+      <span class='display-7 mb-3 fancy-display fancy-display-small'>Crew</span><span class='ml-3 dark-54'><%=pluralize(@movie.crew.length, "crew member")%></span>
+      <div class='row mt-4 mb-4'>
+        <% @movie.crew.each do |crew_member| %>
+          <div class='col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6 mb-5'>
+            <a href="<%= person_path(crew_member.id)%>">
+              <img class="card-img-top img-fluid" src="<%= configurations_base_url %>h632<%=crew_member.profile_path%>" onerror="this.onerror=null; this.src='/assets/default-profile-icon.jpg'">
+              <div class='text-center'>
+                <p class='font-weight-normal fs-130 fs-lg-115 fs-md-105 mb-1'>
+                  <%= crew_member.name %>
+                </p>
+                <span class='dark-64 font-weight-light fs-lg-100 fs-md-094'><%= crew_member.character %></span>
+              </div>
+            </a>
           </div>
-        </div>
-        <div class='card-body'>
-          <h5 class='card-title'><%= video.name %></h5>
-        </div>
+        <% end %>
       </div>
+    <% end %>
+    </div>
+  </div>
+
+  <% if @movie.images.any? %>
+  <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+    <div class='container-fluid pl-lg-6 pr-lg-6'>
+    <% if @movie.backdrops.any? %>
+      <span class='display-7 mb-3 fancy-display fancy-display-small'>Backdrops</span><span class='ml-3 dark-54'><%=@movie.backdrops.length%> images</span>
+      <div class='row mt-4 mb-4'>
+        <% @movie.backdrops.each do |image| %>
+        <div class='col-xxl-2 col-xl-2half col-lg-3 col-md-4 col-sm-6 mb-4'>
+          <a href="<%= configurations_base_url %>original<%=image.file_path%>" data-lightbox= "backdrop-images">
+            <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
+          </a>
+        </div>
+        <% end %>
       </div>
+    <% end %>
+
+    <% if @movie.posters.any? %>
+      <span class='display-7 mb-3 fancy-display fancy-display-small'>Posters</span><span class='ml-3 dark-54'><%=pluralize(@movie.posters.length, "image")%></span>
+      <div class='row mt-4 mb-4'>
+        <% @movie.posters.each do |image| %>
+        <div class='col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6 mb-4'>
+          <a href="<%= configurations_base_url %>original<%=image.file_path%>" data-lightbox= "poster-images">
+            <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
+          </a>
+        </div>
+        <% end %>
+      </div>
+    <% end %>
+    </div>
+  </div>
+  <% end %>
+  <% if @movie.videos.any? %>
+  <div class="tab-pane fade pt-5" id="videos" role="tabpanel" aria-labelledby="videos-tab">
+    <div class='container-fluid pl-lg-6 pr-lg-6'>
+      <% if @movie.videos.any? %>
+        <% @movie.video_types.each do |key, value| %>
+          <span class='display-7 mb-3 fancy-display fancy-display-small'><%=key.pluralize%></span><span class='ml-3 dark-54'><%=pluralize(value.length, "video")%></span>
+          <div class='row mt-4 mb-4'>
+            <% value.each do |video| %>
+              <div class='col-sm-6 col-md-4 col-lg-3 mb-4'>
+                <div class='card video-card video-toggle' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= video.key %>" data-target='#videoModal' >
+                  <div class='position-relative video-card-img-container'>
+                    <img class="card-img-top img-fluid" src="https://img.youtube.com/vi/<%=video.key%>/maxresdefault.jpg" data-holder-rendered="true">
+                    <div class='video-btn transition-color-03'>
+                      <span>
+                        <%= inline_svg 'baseline-play_circle_filled'%>
+                      </span>
+                    </div>
+                  </div>
+                  <div class='card-body'>
+                    <h5 class='card-title'><%= video.name %></h5>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
+  <% end %>
 </div>

@@ -122,6 +122,10 @@ module MovieCore
       args.fetch("videos", {}).fetch('results', []).map { |video| Video.new(video) }
     end
 
+    def video_types
+      videos.group_by {|video| video.type}
+    end
+
     def parse_trailers
       self.videos.select { |video| video.type == 'Trailer' }
     end

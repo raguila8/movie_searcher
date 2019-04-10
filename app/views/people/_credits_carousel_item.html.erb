@@ -1,15 +1,15 @@
 <%= link_to movie_path(credit.id) do %>
 <div class='credits-carousel-item text-center'>
-	<div class='carousel-poster-item mb-2'>
-    <div class='position-relative credit-poster-container'>
-	    <img src="<%= poster_image_src(credit.poster_path) %>" class='img-fluid'>
-	  </div>
-	</div>
-  <p class='font-weight-normal fs-130 mb-1'><%= credit.title %></p>
+  <div class='carousel-poster-item mb-2'>
+    <div class='position-relative credit-profile-container credit-poster-container'>
+      <img src="<%= poster_image_src(credit.poster_path) %>" class='img-fluid'>
+    </div>
+  </div>
+  <p class='font-weight-normal fs-120 fs-lg-115 fs-md-105 mb-1'><%= credit.title %></p>
   <% if credit.class.method_defined? :character and not credit.character.nil?%>
-    <span class='dark-64 font-weight-light'><%= credit.character %></span>
+    <span class='dark-64 font-weight-light fs-lg-100 fs-md-094'><%= credit.character %></span>
   <% else %>
-    <span class='dark-64 font-weight-light'><%= credit.job %></span>
+    <span class='dark-64 font-weight-light fs-lg-100 fs-md-094'><%= credit.job %></span>
   <% end %>
 </div>
 <% end %>

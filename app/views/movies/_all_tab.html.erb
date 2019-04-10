@@ -1,60 +1,124 @@
 <% if movie.cast.any? %>
 <!-- Cast section -->
-<section class='show-section cast-section mb-9'>
-  <h1 class='display-5 mb-5'>Cast</h1>
+<section class='show-section cast-section container-fluid pb-6 pt-6 pl-lg-6 pr-lg-6'>
+  <h1 class='display-5 mb-5 text-center'>Cast</h1>
+  <div class='row align-items-center'>
+    <div class='col text-right justify-content-center align-self-end'>
+      <%= link_to "", class: 'btn btn-text font-weight-600 nav-link arrow-link', 
+                           data: { target: 'cast-tab', trigger: 'tab'}  do %>
+        <svg>
+	  <g>
+	    <line y1="31.28" x2="227.62" y2="31.28"></line>
+	    <polyline points="222.62 25.78 228.12 31.28 222.62 36.78"></polyline>
+	    <circle cx="224.67" cy="30.94" r="30.5" transform="rotate(180 224.67 30.94) scale(1, -1) translate(0, -61)"></circle>
+          </g>
+        </svg>
+        <font>View all cast</font>
+      <% end %>
+    </div>
+  </div>
   <div class='cast-carousel slick-carousel'>
     <% movie.cast.each do |cast_member| %>
-		  <% if not cast_member.profile_path.nil? %>
+      <% if not cast_member.profile_path.nil? %>
         <%= render partial: '/movies/credits_carousel_item', locals: { person: cast_member } %>
-			<% end %>
+      <% end %>
     <% end %>
   </div>
 </section> <!--/ End cast section -->
 <% end %>
 
-<% if movie.crew.any? %>
-<!-- Crew section -->
+<!--
+<%# if movie.crew.any? %>
+
 <section class='show-section crew-section mb-9'>
   <h1 class='display-5 mb-5'>Crew</h1>
   <div class='crew-carousel slick-carousel'>
-    <% movie.crew.each do |crew_member| %>
-		  <% if not crew_member.profile_path.nil? %>
-        <%= render partial: '/movies/credits_carousel_item', locals: { person: crew_member } %>
-			<% end %>
-    <% end %>
+    <%# movie.crew.each do |crew_member| %>
+		  <%# if not crew_member.profile_path.nil? %>
+        <%#= render partial: '/movies/credits_carousel_item', locals: { person: crew_member } %>
+			<%# end %>
+    <%# end %>
   </div>
-</section> <!--/ End crew section -->
-<% end %>
-
+</section> 
+<%# end %>
+-->
 
 <% if movie.images.any? %>
 <!-- Images section -->
-<section class='show-section images-section mb-9'>
-  <h1 class='display-5 mb-5'>Images</h1>
+<section class='show-section container-fluid images-section pb-6 pt-6 pl-lg-6 pr-lg-6'>
+  <h1 class='display-5 mb-5 text-center'>Images</h1>
 
-  <div class='card-columns'>
-    <% movie.images.take(6).each do |image| %>
+  <div class='row align-items-center'>
+    <div class='col text-right justify-content-center align-self-end'>
+      <%= link_to "", class: 'btn btn-text font-weight-600 nav-link arrow-link', 
+                      data: { target: 'images-tab', trigger: 'tab'}  do %>
+        <svg>
+	  <g>
+	    <line y1="31.28" x2="227.62" y2="31.28"></line>
+	    <polyline points="222.62 25.78 228.12 31.28 222.62 36.78"></polyline>
+	    <circle cx="224.67" cy="30.94" r="30.5" transform="rotate(180 224.67 30.94) scale(1, -1) translate(0, -61)"></circle>
+          </g>
+        </svg>
+        <font>View all images</font>
+      <% end %>
+    </div>
+  </div>
+
+  <% if movie.images.length >= 4 %>
+  <div class='card-columns images-card-columns'>
+    <% movie.images.take(image_preview_count(movie)).each do |image| %>
+    <a href="<%= configurations_base_url %>original<%=image.file_path%>" data-lightbox= "images-all-tab">
     <div class='card'>
       <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
     </div>
+    </a>
     <% end %>
   </div>
+  <% else %>
+    <div class='row'>
+    <% movie.images.each do |image| %>
+    <div class='col'>
+      <a href="<%= configurations_base_url %>original<%=image.file_path%>" data-lightbox= "images-all-tab">
+        <img class="img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
+      </a>
+    </div>
+    <% end %>
+    </div>
+  <% end %>
 </section> <!--/ End images section -->
 <% end %>
 
 
 <% if movie.videos.any? %>
 <!-- Videos section -->
-<section class='show-section videos-section mb-9'>
-  <h1 class='display-5 mb-5'>Videos</h1>
+<section class='show-section videos-section pb-6 container pt-6 pl-lg-6 pr-lg-6'>
+  <h1 class='display-5 mb-5 text-center'>Videos</h1>
+ 
+  <div class='row align-items-center'>
+    <div class='col text-right justify-content-center align-self-end'>
+      <%= link_to "", class: 'btn btn-text font-weight-600 nav-link arrow-link', 
+                      data: { target: 'videos-tab', trigger: 'tab'}  do %>
+        <svg>
+	  <g>
+	    <line y1="31.28" x2="227.62" y2="31.28"></line>
+	    <polyline points="222.62 25.78 228.12 31.28 222.62 36.78"></polyline>
+	    <circle cx="224.67" cy="30.94" r="30.5" transform="rotate(180 224.67 30.94) scale(1, -1) translate(0, -61)"></circle>
+          </g>
+        </svg>
+        <font>View all videos</font>
+      <% end %>
+    </div>
+  </div>
+
+ 
   <% if movie.video_count > 3 %>
   <div class="embed-responsive embed-responsive-16by9">
-	  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/<%=movie.videos.first.key%>" id="show-video"  allowscriptaccess="always" allow="autoplay" allowfullscreen></iframe>
-	</div>
+    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/<%=movie.videos.first.key%>" id="show-video"  allowscriptaccess="always" allow="autoplay" allowfullscreen></iframe>
+  </div>
 
   <div class='video-carousel slider-nav slick-carousel'>
     <% movie.videos.each_with_index do |video, index| %>
-      <div class='video-carousel-item text-center'>
+      <div class='video-carousel-item text-center mt-2'>
         <div class="position-relative video-image-container <%= 'active' if index == 0 %>" data-src="https://www.youtube.com/embed/<%=video.key%>">
           <img src="https://img.youtube.com/vi/<%=video.key%>/maxresdefault.jpg" class='img-fluid'>
           <div class='video-meta'>

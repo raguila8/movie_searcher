@@ -1,13 +1,13 @@
 <%= link_to person_path(person.id) do %>
   <div class='card'>
     <img class='card-img-top' src="<%= profile_image_src person %>" class='img-fluid'  alt="<%=person.name%>">
-		<div class='card-body text-center'>
+    <div class='card-body text-center'>
       <p class='font-weight-normal fs-130 mb-1'><%= person.name %></p>
       <% if person.class.method_defined? :character %>
       <span class='dark-64 font-weight-light'><%= person.character %></span>
       <% else %>
       <span class='dark-64 font-weight-light'><%= person.job %></span>
       <% end %>
-	  </div>
-	</div>
+    </div>
+  </div>
 <% end %>	
