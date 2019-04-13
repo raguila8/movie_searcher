@@ -30,13 +30,13 @@ $(document).on('turbolinks:load', function() {
 
 
   if ($('body').data('page') == 'show') {
-    $('.cast-carousel, .cast-credits-carousel, .crew-carousel').on('init', function(slick) {
+    $('.cast-carousel, .cast-credits-carousel, .crew-carousel, .similar-movies-carousel').on('init', function(slick) {
       let height = $($(this).find(".credit-profile-container")[0]).css('padding-top');
       $(this).find('.slick-arrow').css('height', height);
     });
 
 
-    $('.cast-carousel, .cast-credits-carousel, .crew-carousel').slick({
+    $('.cast-carousel, .cast-credits-carousel, .crew-carousel, .similar-movies-carousel').slick({
       infinite: false,
       slidesToShow: 7,
       slidesToScroll: 7,
@@ -122,7 +122,7 @@ $(document).on('turbolinks:load', function() {
     $(window).on('resize', function(){
       if(resizeChangeTimer !== false) clearTimeout(resizeChangeTimer);
       resizeChangeTimer = setTimeout(function(){
-        let $slick = $('.cast-carousel, .cast-credits-carousel, .crew-carousel');
+        let $slick = $('.cast-carousel, .cast-credits-carousel, .crew-carousel, .similar-movies-carousel');
         let height = $($slick.find(".credit-profile-container")[0]).css('padding-top');
         console.log(height);
         $slick.find('.slick-arrow').css('height', height);
@@ -133,7 +133,7 @@ $(document).on('turbolinks:load', function() {
     $(".arrow-link[data-trigger='tab']").on('click', function (e) {
       e.preventDefault();
       let target = $(this).attr('data-target');
-      $target = $("#movieTab a[id='" + target + "']");
+      $target = $(".show-tabs a[id='" + target + "']");
       if (!$target.hasClass('active')) {
         $target.tab('show'); // Select tab by name
       }

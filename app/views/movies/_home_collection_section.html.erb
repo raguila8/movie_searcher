@@ -3,16 +3,16 @@
     <div class='col-8'>
       <h1 class='display-5'><%= section %></h1>
     </div>
-    <div class='col-4 text-center justify-content-center'>
-      <%= link_to discover_path(section.downcase.gsub(/\s+/, "-")), class: 'btn btn-text font-weight-600' do %>
-        <div class='btn-content'>
-	  <span class='btn-text mr-1'>
-	    View all
-	  </span>
-          <span class='btn-svg-container'>
-	    <%= inline_svg 'outline-arrow_right_alt', class: 'btn-svg' %>
-	  </span>
-        </div>
+    <div class='col text-right justify-content-center'>
+      <%= link_to discover_path(section.downcase.gsub(/\s+/, "-")), class: 'btn btn-text font-weight-600 arrow-link' do %>
+        <svg>
+	  <g>
+	    <line y1="31.28" x2="227.62" y2="31.28"></line>
+	    <polyline points="222.62 25.78 228.12 31.28 222.62 36.78"></polyline>
+	    <circle cx="224.67" cy="30.94" r="30.5" transform="rotate(180 224.67 30.94) scale(1, -1) translate(0, -61)"></circle>
+          </g>
+        </svg>
+        <font>View all</font>
       <% end %>
     </div>
   </div>

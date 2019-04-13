@@ -11,6 +11,7 @@ module MovieCore
                   :poster_path,
                   :release_date,
                   :revenue,
+                  :budget,
                   :runtime,
                   :status,
                   :tagline,
@@ -30,7 +31,8 @@ module MovieCore
                   :story_by,
                   :rating,
                   :backdrops,
-                  :posters
+                  :posters,
+                  :similar_movies
 
     CACHE_DEFAULTS = { expires_in: 7.days, force: false }
     QUERY_DEFAULTS = { append_to_response: "videos,external_ids", language: 'en-US' }
@@ -52,6 +54,9 @@ module MovieCore
       if args.key?('images')
         parse_images(args)
       end
+      if args.key?("similar")
+        self.similar_movies = parse_similar_movies(args)
+      end
     end
 
     def self.find(id, query={})
@@ -61,7 +66,7 @@ module MovieCore
       response = Protocol::Request.get("movie/#{id}", CACHE_DEFAULTS, query)
       Movie.new(response)
     end
-
+ 
     def self.discover_movies_with_genre(genre)
       query = {sort_by: "popularity.desc", include_adult: false, with_genres: genre, language: 'en-US' }
       response = Protocol::Request.where('discover/movie', CACHE_DEFAULTS, query)
@@ -108,6 +113,10 @@ module MovieCore
       response = Protocol::Request.where('movie/upcoming', cache, query)
       movies = response.fetch('results', []).sample(max_limit).map { |movie| MovieCore::Movie.new(movie) }
       [ movies, response[:errors] ]
+    end
+
+    def parse_similar_movies(args)
+      args.fetch("similar", {}).fetch('results', []).map { |movie| MovieCore::Movie.new(movie) }
     end
 
     def parse_genres(args)

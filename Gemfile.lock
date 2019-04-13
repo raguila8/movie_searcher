@@ -93,6 +93,7 @@ GEM
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
     io-like (0.3.0)
+    iso-639 (0.2.8)
     jbuilder (2.8.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -230,6 +231,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   faraday
   inline_svg
+  iso-639
   jbuilder (~> 2.5)
   jquery-rails
   jquery-slick-rails

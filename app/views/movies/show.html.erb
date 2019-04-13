@@ -1,11 +1,50 @@
 <div class='container pt-6'>
   <section class='show-section movie-header mb-9'>
-    <h1 class='display-4 mb-5'>
-      <%= @movie.title %>
-    </h1>
-
+    <div class='row align-items-center'>
+      <div class='col-md-8'>
+        <h1 class='display-4 mb-5'>
+          <%= @movie.title %>
+        </h1>
+      </div>
+    </div>
     <div class='row'>
       <div class='col-md-8'>
+        <div class='row align-items-center pb-4'>
+        <div class='col order-last'>
+          <div class='film-social-btns transition-color-03'>
+          <% if @movie.has_facebook? %>
+            <%= link_to @movie.facebook_url, target: :_blank, data: { toggle: "tooltip", placement: "top" }, title: "Visit facebook" do %>
+              <%= inline_svg 'facebook-logo.svg', class: 'film-btn-svg' %>
+            <% end %>
+          <% end %>
+
+          <% if @movie.has_twitter? %>
+            <%= link_to @movie.twitter_url, target: :_blank, data: { toggle: "tooltip", placement: "top" }, title: "Visit twitter"  do %>
+              <%= inline_svg 'twitter-logo.svg', class: 'film-btn-svg' %>
+            <% end %>
+          <% end %>
+
+          <% if @movie.has_instagram? %>
+            <%= link_to @movie.instagram_url, target: :_blank, data: { toggle: "tooltip", placement: "top" }, title: "Visit instagram"  do %>
+              <%= inline_svg 'instagram-logo.svg', class: 'film-btn-svg' %>
+            <% end %>
+          <% end %>
+          <% if not @movie.homepage.nil? %>
+            <%= link_to @movie.homepage, target: :_blank, data: { toggle: "tooltip", placement: "top" }, title: "Visit homepage"  do %>
+              <%= inline_svg 'link.svg', class: 'film-btn-svg' %>
+            <% end %>
+          <% end %>
+        </div>
+        </div>
+        <div class='col order-first'>
+          <% if @movie.trailers? %>
+          <button type="button" class='btn btn-outline-accent video-toggle' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= @movie.get_a_trailer.key %>" data-target='#videoModal'>
+            <%= inline_svg 'baseline-play_arrow.svg', class: 'film-btn-svg' %>
+            Play Trailer
+          </button>
+        <% end %>
+        </div>
+        </div>
         <div class='row'>
           <div class='col-md-11'>
             <p class='overview mb-4'>
@@ -14,6 +53,44 @@
           </div>
         </div>
         <div class='row'>
+          <% if not @movie.release_date.nil? and not @movie.release_date.empty? %>
+          <div class='col-md-4 mb-4'>
+            <p class='lead1 featured-data-cat'>Release Date</p>
+            <span class='featured-data'>
+              <%= @movie.release_date.to_time.strftime("%B %e, %Y") %>
+            </span>
+          </div>
+          <% end %>
+
+          <% if not @movie.runtime.nil? %>
+          <div class='col-md-4 mb-4'>
+            <p class='lead1 featured-data-cat'>Runtime</p>
+            <span class='featured-data'>
+              <%= @movie.runtime %> min
+            </span>
+          </div>
+          <% end %>
+
+          <% if not @movie.rating.nil? %>
+          <div class='col-md-4 mb-4'>
+            <p class='lead1 featured-data-cat'>Rating</p>
+            <span class='featured-data'>
+              <%= @movie.rating %>
+            </span>
+          </div>
+          <% end %>
+
+          <% if @movie.genres.any? %>
+          <div class='col-md-4 mb-4'>
+            <p class='lead1 featured-data-cat'>Genres</p>
+            <% @movie.genres.each_with_index do |genre, index| %>
+              <%= link_to genre_path(genre.id), class: "accent-link" do %>
+                <%= genre.name %>
+              <% end %><%=', ' if index != @movie.genres.length - 1 %>
+            <% end %>
+          </div>
+          <% end %>
+
           <% if @movie.directed_by.any? %>
           <div class='col-md-4 mb-4'>
             <p class='lead1 featured-data-cat'>Directed by</p>
@@ -42,33 +119,33 @@
           </div>
           <% end %>
 
-          <% if not @movie.runtime.nil? %>
+          <% if not @movie.original_language.nil? %>
           <div class='col-md-4 mb-4'>
-            <p class='lead1 featured-data-cat'>Runtime</p>
+            <p class='lead1 featured-data-cat'>Language</p>
             <span class='featured-data'>
-              <%= @movie.runtime %> min
+              <%= ISO_639.find(@movie.original_language).english_name %>
             </span>
           </div>
           <% end %>
 
-          <% if not @movie.rating.nil? %>
+          <% if not @movie.budget.nil? %>
           <div class='col-md-4 mb-4'>
-            <p class='lead1 featured-data-cat'>Rating</p>
+            <p class='lead1 featured-data-cat'>Budget</p>
             <span class='featured-data'>
-              <%= @movie.rating %>
+              <%= number_to_currency @movie.budget, precision: 0 %>
             </span>
           </div>
           <% end %>
 
-          <% if not @movie.release_date.nil? and not @movie.release_date.empty? %>
+          <% if not @movie.revenue.nil? %>
           <div class='col-md-4 mb-4'>
-            <p class='lead1 featured-data-cat'>Release Date</p>
+            <p class='lead1 featured-data-cat'>Revenue</p>
             <span class='featured-data'>
-              <%= @movie.release_date.to_time.strftime("%B %e, %Y") %>
+              <%= number_to_currency @movie.revenue, precision: 0 %>
             </span>
           </div>
           <% end %>
-
+ 
           <% if not @movie.status.nil? %>
           <div class='col-md-4 mb-4'>
             <p class='lead1 featured-data-cat'>Status</p>
@@ -76,8 +153,7 @@
               <%= @movie.status %>
             </span>
           </div>
-          <% end %>
-
+          <% end %> 
         </div>
       </div>
 

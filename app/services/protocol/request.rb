@@ -24,7 +24,7 @@ module Protocol
         query_string = query.map{|k,v| "#{k}=#{v}"}.join("&")
         path = query.empty?? root_path : "#{root_path}?#{query_string}"
 
-        response =  Rails.cache.fetch(path, cache_params) do
+        response = Rails.cache.fetch(path, cache_params) do
           api.get(path)
         end
 

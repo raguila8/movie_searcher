@@ -1,5 +1,5 @@
 <div class='container'>
-  <ul class="nav nav-tabs" id="personTab" role="tablist">
+  <ul class="nav nav-tabs show-tabs" id="personTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
     </li>
@@ -25,21 +25,26 @@
   <div class="tab-pane fade show active pt-5" id="all" role="tabpanel" aria-labelledby="all-tab">
     <%= render partial: '/people/all_tab', locals: { person: @person } %>
   </div>
+
   <% if @person.acting_credits.any? %>
   <div class="tab-pane fade" id="cast-credits" role="tabpanel" aria-labelledby="cast-credits-tab">
-    <section class='show-section cast-section mb-9'>
-      <div class='card-columns card-columns-4'>
-        <% @person.acting_credits.each do |acting_credit| %>
-          <%= render partial: '/people/credit_tab_item', locals: { credit: acting_credit } %>
+    <section class='show-section cast-section container-fluid pl-lg-6 pr-lg-6'>
+      <span class='display-7 mb-3 fancy-display fancy-display-small'>Movies</span><span class='ml-3 dark-54'><%=pluralize(@person.acting_credits.length, "movie")%></span>
+      <div class='row mt-4 mb-4'>
+        <% @person.acting_credits.each do |credit| %>
+          <%= render partial: '/people/credit_tab_item', locals: { credit: credit } %>
         <% end %>
       </div>
     </section>
   </div>
   <% end %>
+
+
   <% if @person.crew_credits.any? %>
   <div class="tab-pane fade" id="crew-credits" role="tabpanel" aria-labelledby="crew-credits-tab">
-    <section class='show-section crew-section mb-9'>
-      <div class='card-columns card-columns-4'>
+    <section class='show-section crew-section container-fluid pl-lg-6 pr-lg-6'>
+      <span class='display-7 mb-3 fancy-display fancy-display-small'>Movies</span><span class='ml-3 dark-54'><%=pluralize(@person.crew_credits.length, "movie")%></span>
+      <div class='row mt-4 mb-4'>
         <% @person.crew_credits.each do |crew_credit| %>
           <%= render partial: '/people/credit_tab_item', locals: { credit: crew_credit } %>
         <% end %>
@@ -47,16 +52,21 @@
     </section>
   </div>
   <% end %>
+
   <% if @person.images.any? %>
   <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-    <div class='card-columns card-columns-4'>
-      <% @person.images.each do |image| %>
-      <div class='card'>
-        <a href="<%= configurations_base_url %>original<%=image.file_path%>" data-lightbox= "images-tab">
-          <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
-        </a>
-      </div>
-      <% end %>
+    <div class='container-fluid pl-lg-6 pr-lg-6'>
+     
+      <span class='display-7 mb-3 fancy-display fancy-display-small'>Images</span><span class='ml-3 dark-54'><%=pluralize(@person.images.length, "image")%></span>
+      <div class='row mt-4 mb-4'>
+        <% @person.images.each do |image| %>
+        <div class='col-xxl-2 col-xl-2half col-lg-3 col-sm-4 col-6 mb-4'>
+          <a href="<%= configurations_base_url %>original<%=image.file_path%>" data-lightbox="profile-images">
+            <img class="card-img-top img-fluid" src="<%= configurations_base_url %>original<%=image.file_path%>" data-holder-rendered="true">
+          </a>
+        </div>
+        <% end %>
+      </div> 
     </div>
   </div>
   <% end %>

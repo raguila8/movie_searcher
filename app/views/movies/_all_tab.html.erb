@@ -137,7 +137,7 @@
   <% else %>
     <div class='row'>
     <% movie.videos.each do |video| %>
-      <div class='col show-video-item'>
+      <div class='col-lg-4 col-sm-6 show-video-item'>
         <div class='card video-card video-toggle' data-toggle="modal" data-src="https://www.youtube.com/embed/<%= video.key %>" data-target='#videoModal' >
           <div class='position-relative video-card-img-container'>
             <img class="card-img-top img-fluid" src="https://img.youtube.com/vi/<%=video.key%>/maxresdefault.jpg" data-holder-rendered="true">
@@ -157,5 +157,17 @@
     </div>
   <% end %>
 </section>
+<% end %>
+
+<% if movie.similar_movies.any? %>
+<!-- Similar movies section -->
+<section class='show-section similar-movies-section container-fluid pb-6 pt-6 pl-lg-6 pr-lg-6'>
+  <h1 class='display-5 mb-5 text-center'>Similar movies</h1>
+  <div class='similar-movies-carousel slick-carousel'>
+    <% movie.similar_movies.each do |m| %>
+      <%= render partial: '/movies/similar_movies_carousel_item', locals: { movie: m } %>
+    <% end %>
+  </div>
+</section> <!--/ End cast section -->
 <% end %>
 

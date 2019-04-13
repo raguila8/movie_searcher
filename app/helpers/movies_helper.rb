@@ -66,6 +66,12 @@ module MoviesHelper
       8
     when 2
       9
+    when 3
+      10
+    when 4
+      11
+    when 5
+      11
     else
       10
     end

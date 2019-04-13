@@ -33,6 +33,16 @@
       Upcoming
     </span>
   <% end %>
-
   <div class="nav-section-divider"></div>
+  <span class='sidenav-label'>
+    Genres
+  </span>
+  <% MovieCore::Genre::GENRES.each do |key, val| %>
+    <%= link_to genre_path(key) do %>
+      <span class='sidenav-item'>
+        <%= inline_svg "genres/#{val.parameterize.underscore}.svg", class: 'mr-1' %>
+        <%= val %>
+      </span>
+    <% end %>
+  <% end %>
 </div>

@@ -1,0 +1,11 @@
+<%= link_to movie_path(movie.id)  do %>
+<div class='similar-movies-carousel-item text-center'>
+  <div class='carousel-profile-item mb-2'>
+    <div class='position-relative credit-profile-container'>
+      <img src="<%= configurations_base_url %>original<%=movie.poster_path%>" class='img-fluid' onerror="this.onerror=null; this.src='/assets/movie1-02.jpg'">
+    </div>
+  </div>
+  <p class='font-weight-normal fs-130 fs-lg-115 fs-md-105 mb-1'><%= movie.title %></p>
+  <span class='dark-64 font-weight-light fs-lg-100 fs-md-094'><%= movie.release_date.to_time.strftime("%B %e, %Y") %></span>
+</div>
+<% end %>
